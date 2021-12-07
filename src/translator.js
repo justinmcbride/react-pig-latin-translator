@@ -1,4 +1,4 @@
-function translator(english) {
+export default function translator(english) {
     const vowel = {a:'a', e:'e', i:'i', o:'o', u:'u'}
 
     let index= 0
@@ -9,10 +9,10 @@ function translator(english) {
             break;
         }
     }
-    if (hasVowel == 0) {
+    if (hasVowel === 0) {
       let index2 = 0
       for (index2; index2 < english.length; index2++) {
-        if (english[index2] == 'y') {
+        if (english[index2] === 'y') {
           index=index2
           break
         }
@@ -21,19 +21,18 @@ function translator(english) {
     const consonants = english.replace(english.substr(index), 'ay')
     const restOfWord = english.substr(index)
     const pigLatin = restOfWord.concat('', consonants)
-<<<<<<< Updated upstream
-=======
     
->>>>>>> Stashed changes
+    console.log(pigLatin)
     return pigLatin
 }
 
-const readline = require('readline').createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
+// const readline = require('readline').createInterface({
+//   input: process.stdin,
+//   output: process.stdout
+// });
 
-readline.question('Enter an English word or phrase: ', word => {
-  console.log("Pig Latin:", translator(word));
-  readline.close();
-});
+// readline.question('Enter an English word or phrase: ', word => {
+//   console.log("Pig Latin:", translator(word));
+//   readline.close();
+// });
+

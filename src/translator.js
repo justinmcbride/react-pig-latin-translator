@@ -1,29 +1,34 @@
-export default function translator(english) {
+export default function translator(word) {
     const vowel = {a:'a', e:'e', i:'i', o:'o', u:'u'}
 
     let index= 0
     let hasVowel = 0
-    for (index; index < english.length; index++) {
-        if (english[index] in vowel) {
+
+    for (index; index < word.length; index++) {
+        if (word[index] in vowel) {
             hasVowel = 1
             break;
         }
     }
     if (hasVowel === 0) {
       let index2 = 0
-      for (index2; index2 < english.length; index2++) {
-        if (english[index2] === 'y') {
+      for (index2; index2 < word.length; index2++) {
+        if (word[index2] === 'y') {
           index=index2
           break
         }
       }
     }
-    const consonants = english.replace(english.substr(index), 'ay')
-    const restOfWord = english.substr(index)
-    const pigLatin = restOfWord.concat('', consonants)
+
+    if (word) {
+        const consonants = word.replace(word.substr(index), 'ay')
+        const restOfWord = word.substr(index)
+        const pigLatin = restOfWord.concat('', consonants)
+        console.log(pigLatin)
+        return pigLatin
+    }
+    console.log("index", index)
     
-    console.log(pigLatin)
-    return pigLatin
 }
 
 // const readline = require('readline').createInterface({

@@ -21,6 +21,10 @@ function translator(english) {
     const consonants = english.replace(english.substr(index), 'ay')
     const restOfWord = english.substr(index)
     const pigLatin = restOfWord.concat('', consonants)
+<<<<<<< Updated upstream
+=======
+    
+>>>>>>> Stashed changes
     return pigLatin
 }
 

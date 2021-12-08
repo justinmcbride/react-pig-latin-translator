@@ -1,41 +1,5 @@
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-  padding: 100px;
-}
-
-.box{
-  color: black;
-  width: 50%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-.box2{
-  color: white;
-  width: 50%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -46,11 +10,37 @@
   color: pink;
 }
 
-.App-link {
-  color: #61dafb;
+.pigImage {
+  pointer-events: none;
+  padding: 5%;
 }
 
-@keyframes App-logo-spin {
+.englishInput {
+  color: black;
+  width: 50%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.pigLatinOutput {
+  color: white;
+  width: 50%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.pigImage {
+  animation: pigImageSpin infinite 20s linear;
+}
+
+@keyframes pigImageSpin {
   from {
     transform: rotate(0deg);
   }

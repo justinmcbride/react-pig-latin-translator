@@ -137,6 +137,8 @@ const stopRecord = () => {
         placeholder="This little piggy went to market..."
       />
       <button class="button-1" onClick={resetInputField}><span class="text">Reset</span></button>
+      <button className="button-1" onClick={startRecord} disabled={recordingState}><span className="text">Talk</span></button>
+      <button className="button-1" onClick={stopRecord} disabled={!recordingState}><span className="text">Stop Talking</span></button>
     </div>
   );
 

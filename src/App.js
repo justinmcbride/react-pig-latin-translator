@@ -1,6 +1,7 @@
 import './App.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import translator from './translator.js'
+import MicRecorder from 'mic-recorder-to-mp3';
 
 import axios from 'axios';
 import _ from "lodash";
@@ -60,6 +61,58 @@ const App = () => {
     setPigLatinOutput(``);
     setPigSpinSpeed(20);
   };
+
+  const [Mp3Recorder, setMp3Recorder] = useState(
+    new MicRecorder({ bitRate: 128 })
+    );
+  const [browserPermissons, setBrowserPermissions] = useState(false);
+  const [recordingState, setRecordingState] = useState(false);
+  const [blobURL, setBlobURL] = useState("");
+  const handleBrowserPermissions = () => {
+    setBrowserPermissions(true)
+  };
+
+  const startRecording = () => {
+    setRecordingState(true)
+  }
+
+  const stopRecording = () => {
+    setRecordingState(false)
+  }
+
+  const handleBlobURL = (e) => {
+    const currentBlobURL = e.target.value;
+    setBlobURL(currentBlobURL);
+  }
+
+  const startRecord = () => {
+      Mp3Recorder
+        .start()
+        .then(() => {
+          startRecording();
+          console.log("recording state:", {recordingState});
+        }).catch((e) => console.error(e))
+  }
+
+
+const stopRecord = () => {
+    Mp3Recorder
+    .stop()
+    .getMp3().then(([buffer, blob]) => {
+      const file = new File(buffer, 'audio_recording.mp3', {
+        type: blob.type,
+        lastModified: Date.now()
+      });
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(file);
+      a.download = 'audio_recording.mp3';
+      a.click();
+
+     }).catch((e) => {
+       alert('We could not retrieve your message');
+       console.log(e);
+     });
+   }
 
   return (
     <div className="App">

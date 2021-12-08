@@ -1,8 +1,10 @@
 export default function translator(word) {
     const vowel = {a:'a', e:'e', i:'i', o:'o', u:'u'}
+    // const punctuation = {p:'.', q:'?', r:'!', s:',', t:'-'}
 
     let index= 0
     let hasVowel = 0
+    // let hasPunctuation = 0
 
     for (index; index < word.length; index++) {
         if (word[index] in vowel) {
@@ -25,12 +27,16 @@ export default function translator(word) {
         const restOfWord = word.substr(index)
         const pigLatin = restOfWord.concat('', consonants)
         console.log(pigLatin)
+
+        // if (word[index] in punctuation) {
+        //     pigLatin.concat('', )
+        // }
+
         return pigLatin
     }
     else {
       return ""
     }
-    console.log("index", index)
 
 }
 

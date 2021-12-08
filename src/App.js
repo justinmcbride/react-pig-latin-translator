@@ -4,7 +4,7 @@ import translator from './translator.js'
 
 function App() {
   const [englishInput, setEnglishInput] = useState('');
-  const [pigLatinOutput, setPigLatinOutput] = useState('Type some English below!');
+  const [pigLatinOutput, setPigLatinOutput] = useState('');
 
   const [pigSpinSpeed, setPigSpinSpeed] = useState(20);
 
@@ -50,17 +50,22 @@ function App() {
 
   const resetInputField = () => {
     setEnglishInput("");
-    setPigLatinOutput('Type some English below!');
+    setPigLatinOutput('');
   };
 
   return (
     <div className="App">
-      <header>English-to-Pig Latin Translator</header>
+      <header className="header">English-to-Pig Latin Translator</header>
       <img
         src="/pigggggy.png"
         alt="This piggy went to market"
-        style={{"animation": `pigImageSpin infinite ${pigSpinSpeed}s linear`}}
-        // className="pigImage"
+        // style={{"animation": `pigImageSpin infinite ${pigSpinSpeed}s linear`}}
+        className="pigImage"
+      />
+      <img
+        className="mersive"
+        alt="Innovation that excites"
+        src="/mersive2.png"
       />
       <span className="pigLatinOutput">{pigLatinOutput}</span>
       <input
@@ -71,7 +76,7 @@ function App() {
         onKeyDown={handleSpace}
         placeholder="This little piggy went to market..."
       />
-      <button class="button-1" role="button" onClick={resetInputField}><span class="text">Reset</span></button>
+      <button class="button-1" onClick={resetInputField}><span class="text">Reset</span></button>
     </div>
   );
 

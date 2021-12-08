@@ -44,7 +44,7 @@ function App() {
     console.log(`handleSpace: englishInput=[${englishInput}] allTranslatedWords=[${allTranslatedWords}]`);
     setPigLatinOutput(allTranslatedWords);
 
-    setPigSpinSpeed(pigSpinSpeed-1);
+    setPigSpinSpeed(pigSpinSpeed * .9);
     console.log(`pigSpinSpeed=[${pigSpinSpeed}]`);
   }
 
@@ -59,8 +59,8 @@ function App() {
       <img
         src="/pigggggy.png"
         alt="This piggy went to market"
-        // style={{"animation": `pigImageSpin infinite ${pigSpinSpeed}s linear`}}
-        className="pigImage"
+        style={{"animation": `pigImageSpin infinite ${pigSpinSpeed}s linear`}}
+        // className="pigImage"
       />
       <span className="pigLatinOutput">{pigLatinOutput}</span>
       <input

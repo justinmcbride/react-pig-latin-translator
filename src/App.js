@@ -10,15 +10,15 @@ function App() {
 
   const handleChange = (e) => {
     const currentInputText = e.target.value;
+    setEnglishInput(currentInputText);
     if (currentInputText[currentInputText.length-1] === ' ') {
       // if the last character entered was a space,
       // we don't want to create a loop, so we return early.
       return;
     }
-
     console.log(`handleChange: currentInputText=[${currentInputText}]`);
-    setEnglishInput(currentInputText);
   }
+
 
   const handleSpace = (e) => {
     if (e.keyCode !== 32) {
@@ -48,26 +48,33 @@ function App() {
     console.log(`pigSpinSpeed=[${pigSpinSpeed}]`);
   }
 
+  const resetInputField = () => {
+    setEnglishInput("");
+    setPigLatinOutput('Type some English below!');
+  };
+
   return (
     <div className="App">
-      <header>Pig Latin Translator</header>
+      <header>English-to-Pig Latin Translator</header>
       <img
         src="/pigggggy.png"
         alt="This piggy went to market"
         // style={{"animation": `pigImageSpin infinite ${pigSpinSpeed}s linear`}}
         className="pigImage"
       />
-    
       <span className="pigLatinOutput">{pigLatinOutput}</span>
       <input
         className="englishInput"
         type="text"
+        value={englishInput}
         onChange={handleChange}
         onKeyDown={handleSpace}
         placeholder="This little piggy went to market..."
       />
+      <button class="button-1" role="button" onClick={resetInputField}><span class="text">Reset</span></button>
     </div>
   );
+
 }
 
 export default App;

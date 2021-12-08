@@ -27,8 +27,11 @@ export default function translator(word) {
         console.log(pigLatin)
         return pigLatin
     }
+    else {
+      return ""
+    }
     console.log("index", index)
-    
+
 }
 
 // const readline = require('readline').createInterface({
@@ -40,4 +43,3 @@ export default function translator(word) {
 //   console.log("Pig Latin:", translator(word));
 //   readline.close();
 // });
-

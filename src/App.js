@@ -2,6 +2,27 @@ import './App.css'
 import { useState } from 'react'
 import translator from './translator.js'
 
+import axios from 'axios';
+import _ from "lodash";
+
+// const OINK_SERVER_URL = `http://oink.mersive.lan`;
+const OINK_SERVER_URL = `http://localhost`;
+const OINK_SERVER_PORT = 5000;
+
+const requestTranslateWord = (wordToTranslate) => {
+  axios.get(`${OINK_SERVER_URL}:${OINK_SERVER_PORT}/translateWord/${wordToTranslate}`)
+  .then(res => {
+    const response = res.data;
+    if (!_.has(response, 'stemChangeIndex') || !_.has(response, 'pigLatinWord')) {
+      console.error(`requestTranslateWord: bad response: response=[${JSON.stringify(response)}]`);
+    }
+    console.log(`requestTranslateWord: wordToTranslate=[${wordToTranslate}] stemChangeIndex=[${response.stemChangeIndex}] pigLatinWord=[${response.pigLatinWord}]`);
+  })
+  .error(err => {
+    console.error(`requestTranslateWord: failure: ${err}`);
+  });
+}
+
 function App() {
   const [englishInput, setEnglishInput] = useState('');
   const [pigLatinOutput, setPigLatinOutput] = useState('Type some English below!');
@@ -19,7 +40,6 @@ function App() {
     console.log(`handleChange: currentInputText=[${currentInputText}]`);
   }
 
-
   const handleSpace = (e) => {
     if (e.keyCode !== 32) {
       // we only care about spaces, so just exit if not a space.
@@ -36,6 +56,7 @@ function App() {
     for (const word of wordArray) {
       // perform the translation of the individual word
       const translatedWord = translator(word);
+      requestTranslateWord(word);
 
       // add it to the final output
       allTranslatedWords += translatedWord + " ";
@@ -71,7 +92,7 @@ function App() {
         onKeyDown={handleSpace}
         placeholder="This little piggy went to market..."
       />
-      <button class="button-1" role="button" onClick={resetInputField}><span class="text">Reset</span></button>
+      <button className="button-1" role="button" onClick={resetInputField}><span className="text">Reset</span></button>
     </div>
   );
 

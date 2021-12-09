@@ -4,6 +4,7 @@ import MicRecorder from 'mic-recorder-to-mp3';
 
 import axios from 'axios';
 import _ from "lodash";
+import FormData from 'form-data'
 
 // const OINK_SERVER_URL = `http://oink.mersive.lan`;
 const OINK_SERVER_URL = `http://localhost`;
@@ -90,14 +91,23 @@ const App = () => {
       .getMp3()
       .then(([buffer, blob]) => {
         setRecordingState(false);
-        const file = new File(buffer, 'audio_recording.mp3', {
-          type: blob.type,
-          lastModified: Date.now()
-        });
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(file);
-        a.download = 'audio_recording.mp3';
-        a.click();
+        const formData = new FormData();
+        formData.append('file', blob, 'audio_recording');
+        axios({
+          method: 'post',
+          url: `${OINK_SERVER_URL}:${OINK_SERVER_PORT}/audio_recordings`,
+          data: formData,
+          headers: {'Content-Type': 'multipart/form-data' }
+          })
+          .then(function (response) {
+              //handle success
+              console.log(response);
+              console.log(response.data);
+              setPigLatinOutput(response.data)
+          })
+          .catch(function (response) {
+              console.log(response);
+          });
       }).catch((e) => {
         console.error(`Failed to stop recording`, e);
       })
@@ -129,7 +139,7 @@ const App = () => {
       </div>
 
       <div className="pigLatinOutput">{pigLatinOutput}</div>
-      
+
       <input
         className="englishInput"
         value={englishInput}

@@ -1,8 +1,15 @@
-import react from 'react';
+import './GameContainer.css';
 
-const GameMode = () => {
+import { useState } from 'react';
+
+import _ from "lodash";
+
+const GameMode = ({timeRemaining, isGameRunning, gameScore}) => {
+
   return (
     <div className="gameModeContainer">
+      <span>Score: {gameScore}</span><br/>
+      <span>Time: {timeRemaining}</span>
     </div>
   )
 };

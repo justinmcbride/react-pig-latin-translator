@@ -12,7 +12,13 @@ import FormData from 'form-data'
 import NormalTranslator from './NormalTranslator';
 import GameMode from './GameMode';
 
+<<<<<<< HEAD
 import { OINK_SERVER_URL, OINK_SERVER_PORT } from './ServerInfo';
+=======
+//const OINK_SERVER_URL = `https://localhost`;
+const OINK_SERVER_URL = `https://oink.mersive.lan`;
+const OINK_SERVER_PORT = 5001;
+>>>>>>> 89e5cb5377104220344d00fc86e7124fcbabfa52
 
 const Mp3Recorder = new MicRecorder({ bitRate: 128 });
 
@@ -30,7 +36,6 @@ const App = () => {
 
   const requestTranslateWord = (wordToTranslate) => {
     console.log(`requestTranslateWord: wordToTranslate=[${wordToTranslate}]`);
-
     axios
       .get(`${OINK_SERVER_URL}:${OINK_SERVER_PORT}/oink/${wordToTranslate}`)
       .then(res => {

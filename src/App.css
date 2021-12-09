@@ -25,7 +25,7 @@
 
 .pigImage {
   pointer-events: none;
-  margin-bottom: auto;
+  padding: 5%;
   animation: pigImageSpin infinite 20s linear;
 }
 
@@ -94,26 +94,31 @@
   }
 }
 
+.animatedWord {
+  animation: outputAnimation 4s ease-out forwards;
+}
+
 @keyframes outputAnimation {
-  0% {color: white; height: 50px; width: 50px;}
-  100% {color:#f34079; height: 50px; width: 100px;}
-  /* 0%   {top: 0px; background: red; width: 100px;}
-  100% {top: 200px; background: yellow; width: 300px;} */
+  0% {
+    color: white;
+  }
+  99% {
+    color:#f34079;
+  }
+  100%{
+    opacity: 0;
+    position: fixed;
+    z-index: -5;
+  }
 }
 
 .pigLatinOutput {
   color: white;
   width: 50%;
-  padding: 2.5%;
-  margin: 8px 0;
-  display: inline-block;
-  border-radius: 4px;
-  box-sizing: border-box;
-  font-size: calc(10px + 2vmin);
-}
 
-.animatedWord {
-  animation: outputAnimation 5s ease-out;
+  border: solid white 3px;
+  border-radius: 50px;
+  font-size: calc(10px + 2vmin);
 }
 
 .mersive {

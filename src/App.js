@@ -137,9 +137,13 @@ const App = () => {
         onChange={handleChange}
         placeholder="This little piggy went to market..."
       />
-      <button className="button-1" onClick={resetInputField}><span class="text">Reset</span></button>
-      <button className="button-1" onClick={startRecord} disabled={recordingState}><span className="text">Talk</span></button>
-      <button className="button-1" onClick={stopRecord} disabled={!recordingState}><span className="text">Stop Talking</span></button>
+      <div className="buttonsBox">
+        <button className="button-2" inline="true" onClick={startRecord} disabled={recordingState}><span className="text">Talk</span></button>
+        <button className="button-3" inline="true" onClick={stopRecord} disabled={!recordingState}><span className="text">Stop Talking</span></button>
+        <span></span>
+        <button className="button-1" inline="true" onClick={resetInputField}><span class="text">Reset</span></button>
+      </div>
+      
     </div>
   );
 

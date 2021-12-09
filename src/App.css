@@ -24,7 +24,7 @@
   color: black;
   width: 55%;
   padding: 12px 20px;
-  display: inline-block;
+  display: flex;
   border-radius: 4px;
   box-sizing: border-box;
 }
@@ -167,6 +167,11 @@
   opacity: .75;
 }
 
+.span {
+  display: flex;
+  flex-grow: 1;
+}
+
 
 @media screen and (max-width: 991px) {
   .button-1 {
@@ -222,7 +227,3 @@
   position: absolute;
 }
 
-.span {
-  display: "flex";
-  flex-grow: "1";
-}

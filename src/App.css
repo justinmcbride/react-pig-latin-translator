@@ -51,7 +51,6 @@
   height: 54px;
   justify-content: center;
   letter-spacing: .4px;
-  margin-bottom: 80px;
   max-width: 100%;
   padding-left: 20px;
   padding-right: 20px;
@@ -94,7 +93,6 @@
   height: 54px;
   justify-content: center;
   letter-spacing: .4px;
-  margin-bottom: 80px;
   max-width: 100%;
   padding-left: 20px;
   padding-right: 20px;
@@ -123,8 +121,6 @@
   opacity: .75;
 }
 
-
-
 .button-3 {
   align-items: center;
   background-image: linear-gradient(135deg, #f34079 40%, #fc894d);
@@ -139,7 +135,6 @@
   height: 54px;
   justify-content: center;
   letter-spacing: .4px;
-  margin-bottom: 80px;
   max-width: 100%;
   padding-left: 20px;
   padding-right: 20px;
@@ -173,7 +168,6 @@
   flex-grow: 1;
   height: 50px;
 }
-
 
 @media screen and (max-width: 991px) {
   .button-1 {
@@ -234,3 +228,7 @@
   position: absolute;
 }
 
+
+.verticalSpacing {
+  flex-grow: 1;
+}

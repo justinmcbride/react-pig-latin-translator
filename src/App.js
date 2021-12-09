@@ -1,10 +1,15 @@
 import './App.css'
+import './GameSwitch.css'
+
 import { useState } from 'react'
 import MicRecorder from 'mic-recorder-to-mp3';
 
 import axios from 'axios';
 import _ from "lodash";
 import FormData from 'form-data'
+
+import NormalTranslator from './NormalTranslator';
+import GameMode from './GameMode';
 
 // const OINK_SERVER_URL = `http://oink.mersive.lan`;
 const OINK_SERVER_URL = `http://oink.mersive.lan`;
@@ -18,7 +23,7 @@ const App = () => {
   const [pigSpinSpeed, setPigSpinSpeed] = useState(20);
 
   const [recordingState, setRecordingState] = useState(false);
-
+  const [isGameModeActivated, setIsGameModeActivated] = useState(false);
   const [animatingWords, setAnimatingWords] = useState([]);
 
   const requestTranslateWord = (wordToTranslate) => {
@@ -64,6 +69,11 @@ const App = () => {
     setEnglishInput(trimmedInput);
     setPigSpinSpeed(pigSpinSpeed * .9);
   }
+
+  const onGameModeClicked = (e) => {
+    const isActivated = e.target.checked;
+    setIsGameModeActivated(isActivated);
+  };
 
   const resetInputField = () => {
     setEnglishInput(``);
@@ -114,11 +124,6 @@ const App = () => {
     ;
   };
 
-  const animatedWords = [];
-  for (const word of animatingWords) {
-    animatedWords.push( <span className="animatedWord">{word.pigLatinWord}</span> );
-  }
-
   return (
     <div className="App">
       <header className="header">English-to-Pig Latin Translator</header>
@@ -134,9 +139,7 @@ const App = () => {
         src="/mersive2.png"
       />
 
-      <div id="animationContainer">
-        {animatedWords}
-      </div>
+      { isGameModeActivated ? <GameMode/> : <NormalTranslator animatingWords={animatingWords}/> }
 
       <div className="pigLatinOutput">{pigLatinOutput}</div>
 
@@ -151,9 +154,16 @@ const App = () => {
         <button className="button-2" inline="true" onClick={startRecord} disabled={recordingState}><span className="text">Talk</span></button>
         <button className="button-3" inline="true" onClick={stopRecord} disabled={!recordingState}><span className="text">Stop Talking</span></button>
         <span className="span"></span>
-        <button className="button-1" inline="true" onClick={resetInputField}><span class="text">Reset</span></button>
+        <button className="button-1" inline="true" onClick={resetInputField}><span className="text">Reset</span></button>
       </div>
-
+      <div className="gameSwitchContainer">
+        <label className="switch">
+          <input type="checkbox" onClick={onGameModeClicked}/>
+          <span className="slider"></span>
+        </label>
+        <div className="switchText">Do you want to play a game?</div>
+      </div>
+      <div className="verticalSpacing"></div>
     </div>
   );
 

@@ -110,11 +110,10 @@
   border-radius: 4px;
   box-sizing: border-box;
   font-size: calc(10px + 2vmin);
-  /* animation: outputAnimation 15s linear;
-  animation-duration: 1.5s; 
-  animation-timing-function: ease-out; */
+}
 
-  
+.animatedWord {
+  animation: outputAnimation 5s ease-out;
 }
 
 .mersive {

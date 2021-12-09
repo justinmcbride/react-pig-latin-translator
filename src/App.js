@@ -15,6 +15,11 @@ const App = () => {
   const [pigLatinOutput, setPigLatinOutput] = useState(``);
   const [pigSpinSpeed, setPigSpinSpeed] = useState(20);
 
+  const [Mp3Recorder] = useState(new MicRecorder({ bitRate: 128 }));
+  const [recordingState, setRecordingState] = useState(false);
+
+  const [translatedWords, setTranslatedWords] = useState([]);
+
   const requestTranslateWord = (wordToTranslate) => {
     axios.get(`${OINK_SERVER_URL}:${OINK_SERVER_PORT}/translateWord/${wordToTranslate}`)
     .then(res => {
@@ -22,6 +27,8 @@ const App = () => {
       if (!_.has(response, `stemChangeIndex`) || !_.has(response, `pigLatinWord`)) {
         console.error(`requestTranslateWord: bad response: response=[${JSON.stringify(response)}]`);
       }
+
+      setTranslatedWords([...translatedWords, response.pigLatinWord]);
       console.log(`requestTranslateWord: wordToTranslate=[${wordToTranslate}] stemChangeIndex=[${response.stemChangeIndex}] pigLatinWord=[${response.pigLatinWord}]`);
     })
     .catch(err => {
@@ -62,40 +69,20 @@ const App = () => {
     setPigSpinSpeed(20);
   };
 
-  const [Mp3Recorder, setMp3Recorder] = useState(
-    new MicRecorder({ bitRate: 128 })
-    );
-  const [browserPermissons, setBrowserPermissions] = useState(false);
-  const [recordingState, setRecordingState] = useState(false);
-  const [blobURL, setBlobURL] = useState("");
-  const handleBrowserPermissions = () => {
-    setBrowserPermissions(true)
-  };
-
   const startRecording = () => {
     setRecordingState(true)
   }
 
-  const stopRecording = () => {
-    setRecordingState(false)
-  }
-
-  const handleBlobURL = (e) => {
-    const currentBlobURL = e.target.value;
-    setBlobURL(currentBlobURL);
-  }
-
   const startRecord = () => {
-      Mp3Recorder
-        .start()
-        .then(() => {
-          startRecording();
-          console.log("recording state:", {recordingState});
-        }).catch((e) => console.error(e))
+    Mp3Recorder
+      .start()
+      .then(() => {
+        startRecording();
+        console.log("recording state:", {recordingState});
+      }).catch((e) => console.error(e))
   }
 
-
-const stopRecord = () => {
+  const stopRecord = () => {
     Mp3Recorder
     .stop()
     .getMp3().then(([buffer, blob]) => {
@@ -112,7 +99,12 @@ const stopRecord = () => {
        alert('We could not retrieve your message');
        console.log(e);
      });
-   }
+  }
+
+  const animatedWords = [];
+  for (const word of translatedWords) {
+    animatedWords.push( <span className="animatedWord">{{word}}</span> );
+  }
 
   return (
     <div className="App">
@@ -129,6 +121,9 @@ const stopRecord = () => {
         src="/mersive2.png"
       />
       <span className="pigLatinOutput">{pigLatinOutput}</span>
+      <div id="animationHolder">
+        { animatedWords }
+      </div>
       <input
         className="englishInput"
         value={englishInput}

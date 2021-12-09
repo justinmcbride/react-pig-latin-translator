@@ -7,7 +7,7 @@ import _ from "lodash";
 import FormData from 'form-data'
 
 // const OINK_SERVER_URL = `http://oink.mersive.lan`;
-const OINK_SERVER_URL = `http://localhost`;
+const OINK_SERVER_URL = `http://oink.mersive.lan`;
 const OINK_SERVER_PORT = 5000;
 
 const Mp3Recorder = new MicRecorder({ bitRate: 128 });
@@ -153,7 +153,7 @@ const App = () => {
         <span className="span"></span>
         <button className="button-1" inline="true" onClick={resetInputField}><span class="text">Reset</span></button>
       </div>
-      
+
     </div>
   );
 

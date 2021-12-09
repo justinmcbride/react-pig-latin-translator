@@ -11,7 +11,7 @@
 }
 
 .header {
-  line-height: 6;
+  line-height: 3;
 }
 
 .buttonsBox { 
@@ -27,6 +27,7 @@
   display: flex;
   border-radius: 4px;
   box-sizing: border-box;
+  margin-top: 0.5%;
 }
 
 .pigImage {
@@ -50,7 +51,7 @@
   height: 54px;
   justify-content: center;
   letter-spacing: .4px;
-  margin-bottom: 120px;
+  margin-bottom: 80px;
   max-width: 100%;
   padding-left: 20px;
   padding-right: 20px;
@@ -93,7 +94,7 @@
   height: 54px;
   justify-content: center;
   letter-spacing: .4px;
-  margin-bottom: 120px;
+  margin-bottom: 80px;
   max-width: 100%;
   padding-left: 20px;
   padding-right: 20px;
@@ -138,7 +139,7 @@
   height: 54px;
   justify-content: center;
   letter-spacing: .4px;
-  margin-bottom: 120px;
+  margin-bottom: 80px;
   max-width: 100%;
   padding-left: 20px;
   padding-right: 20px;
@@ -170,6 +171,7 @@
 .span {
   display: flex;
   flex-grow: 1;
+  height: 50px;
 }
 
 
@@ -197,6 +199,11 @@
   animation: outputAnimation 4s ease-out forwards;
 }
 
+#animationContainer {
+  height: calc(20px + 2vmin);
+  margin-bottom: 0.35%;
+}
+
 @keyframes outputAnimation {
   0% {
     color: white;
@@ -214,10 +221,10 @@
 .pigLatinOutput {
   color: white;
   width: 50%;
-
-  border: solid white 3px;
+  height: calc(10px + 2vmin);
   border-radius: 50px;
   font-size: calc(10px + 2vmin);
+  margin-bottom: 0.35%;
 }
 
 .mersive {

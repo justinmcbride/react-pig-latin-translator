@@ -11,8 +11,8 @@ import FormData from 'form-data'
 import NormalTranslator from './NormalTranslator';
 import GameMode from './GameMode';
 
-//const OINK_SERVER_URL = `https://localhost`;
-const OINK_SERVER_URL = `https://oink.mersive.lan`;
+const OINK_SERVER_URL = `http://localhost`;
+//const OINK_SERVER_URL = `https://oink.mersive.lan`;
 const OINK_SERVER_PORT = 5001;
 
 const Mp3Recorder = new MicRecorder({ bitRate: 128 });
@@ -30,6 +30,7 @@ const App = () => {
     console.log(`requestTranslateWord: wordToTranslate=[${wordToTranslate}]`);
     if (wordToTranslate == "mersive") {
       console.log("rick roll")
+      axios.get("www.youtube.com")
     }
     else {
       console.log(`requestTranslateWord: wordToTranslate=[${wordToTranslate}]`);

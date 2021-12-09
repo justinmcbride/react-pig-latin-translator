@@ -11,9 +11,9 @@ import FormData from 'form-data'
 import NormalTranslator from './NormalTranslator';
 import GameMode from './GameMode';
 
-// const OINK_SERVER_URL = `http://oink.mersive.lan`;
-const OINK_SERVER_URL = `http://oink.mersive.lan`;
-const OINK_SERVER_PORT = 5000;
+//const OINK_SERVER_URL = `https://localhost`;
+const OINK_SERVER_URL = `https://oink.mersive.lan`;
+const OINK_SERVER_PORT = 5001;
 
 const Mp3Recorder = new MicRecorder({ bitRate: 128 });
 
@@ -28,24 +28,30 @@ const App = () => {
 
   const requestTranslateWord = (wordToTranslate) => {
     console.log(`requestTranslateWord: wordToTranslate=[${wordToTranslate}]`);
+    if (wordToTranslate == "mersive") {
+      console.log("rick roll")
+    }
+    else {
+      console.log(`requestTranslateWord: wordToTranslate=[${wordToTranslate}]`);
 
-    axios
-      .get(`${OINK_SERVER_URL}:${OINK_SERVER_PORT}/oink/${wordToTranslate}`)
-      .then(res => {
-        const response = res.data;
-        if (!_.has(response, `stemChangeIndex`) || !_.has(response, `pigLatinWord`)) {
-          console.error(`requestTranslateWord: bad response: response=[${JSON.stringify(response)}]`);
-        }
+      axios
+        .get(`${OINK_SERVER_URL}:${OINK_SERVER_PORT}/oink/${wordToTranslate}`)
+        .then(res => {
+          const response = res.data;
+          if (!_.has(response, `stemChangeIndex`) || !_.has(response, `pigLatinWord`)) {
+            console.error(`requestTranslateWord: bad response: response=[${JSON.stringify(response)}]`);
+          }
 
-        setPigLatinOutput(`${pigLatinOutput} ${response.pigLatinWord}`);
+          setPigLatinOutput(`${pigLatinOutput} ${response.pigLatinWord}`);
 
-        setAnimatingWords([...animatingWords, response]);
-        console.log(`requestTranslateWord: wordToTranslate=[${wordToTranslate}] stemChangeIndex=[${response.stemChangeIndex}] pigLatinWord=[${response.pigLatinWord}]`);
-      })
-      .catch(err => {
-        console.error(`requestTranslateWord: failure: ${err}`);
-      })
-    ;
+          setAnimatingWords([...animatingWords, response]);
+          console.log(`requestTranslateWord: wordToTranslate=[${wordToTranslate}] stemChangeIndex=[${response.stemChangeIndex}] pigLatinWord=[${response.pigLatinWord}]`);
+        })
+        .catch(err => {
+          console.error(`requestTranslateWord: failure: ${err}`);
+        })
+      ;
+    }
   };
 
   const handleChange = (e) => {

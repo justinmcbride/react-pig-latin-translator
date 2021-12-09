@@ -1,5 +1,5 @@
 import './App.css'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import translator from './translator.js'
 import MicRecorder from 'mic-recorder-to-mp3';
 
@@ -79,31 +79,35 @@ const App = () => {
       .then(() => {
         startRecording();
         console.log("recording state:", {recordingState});
-      }).catch((e) => console.error(e))
+      })
+      .catch((e) => console.error(e))
+    ;
   }
 
   const stopRecord = () => {
     Mp3Recorder
-    .stop()
-    .getMp3().then(([buffer, blob]) => {
-      const file = new File(buffer, 'audio_recording.mp3', {
-        type: blob.type,
-        lastModified: Date.now()
-      });
-      var a = document.createElement("a");
-      a.href = URL.createObjectURL(file);
-      a.download = 'audio_recording.mp3';
-      a.click();
+      .stop()
+      .getMp3()
+      .then(([buffer, blob]) => {
+        const file = new File(buffer, 'audio_recording.mp3', {
+          type: blob.type,
+          lastModified: Date.now()
+        });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(file);
+        a.download = 'audio_recording.mp3';
+        a.click();
 
-     }).catch((e) => {
-       alert('We could not retrieve your message');
-       console.log(e);
-     });
+      }).catch((e) => {
+        alert('We could not retrieve your message');
+        console.log(e);
+      })
+    ;
   }
 
   const animatedWords = [];
   for (const word of translatedWords) {
-    animatedWords.push( <span className="animatedWord">{{word}}</span> );
+    animatedWords.push( <span className="animatedWord">{word}</span> );
   }
 
   return (

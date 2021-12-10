@@ -1,27 +1,24 @@
 import './App.css';
+import './GenericButton.css';
 import './GameSwitch.css';
 
 import { useState, useEffect } from 'react';
 import { useTimer } from 'react-timer-hook';
 
-import MicRecorder from 'mic-recorder-to-mp3';
 import axios from 'axios';
-import _ from "lodash";
-import FormData from 'form-data'
+import _ from 'lodash';
 
 import NormalTranslator from './NormalTranslator';
 import GameMode from './GameMode';
+import RecordingButton from './RecordingButton';
 
 import { OINK_SERVER_URL, OINK_SERVER_PORT } from './ServerInfo';
-
-const Mp3Recorder = new MicRecorder({ bitRate: 128 });
 
 const App = () => {
   const [englishInput, setEnglishInput] = useState(``);
   const [pigLatinOutput, setPigLatinOutput] = useState(``);
   const [pigSpinSpeed, setPigSpinSpeed] = useState(20);
 
-  const [recordingState, setRecordingState] = useState(false);
   const [isGameModeActivated, setIsGameModeActivated] = useState(false);
   const [animatingWords, setAnimatingWords] = useState([]);
 
@@ -49,11 +46,10 @@ const App = () => {
     ;
   };
 
-  useEffect( () => {
+  useEffect(() => {
     const ourFunction = async() => {
       const newWord = await requestGameWord();
       setGameWord(newWord);
-      console.log(`Got new word: ${newWord}`);
     };
 
     ourFunction();
@@ -104,8 +100,12 @@ const App = () => {
   };
 
   const gameTimerExpired = () => {
-
   };
+
+  const handleTranscribeResult = (transcriptionResults) => {
+    // transcriptionResults.englishWords
+    setPigLatinOutput(transcriptionResults.pigLatinWords.join(' '));
+  }
 
   const resetEverything = () => {
     if (!isRunning && isGameModeActivated) {
@@ -117,49 +117,6 @@ const App = () => {
       setAnimatingWords([]);
       setPigSpinSpeed(20);
     }
-  };
-
-  const startRecord = () => {
-    console.log(`Attempting to start recording`);
-    Mp3Recorder
-      .start()
-      .then(() => {
-        setRecordingState(true);
-      })
-      .catch((e) => {
-        console.error(`Failed to start recording`, e);
-      })
-    ;
-  };
-
-  const stopRecord = () => {
-    console.log(`Attempting to stop recording`);
-    Mp3Recorder
-      .stop()
-      .getMp3()
-      .then(([buffer, blob]) => {
-        setRecordingState(false);
-        const formData = new FormData();
-        formData.append('file', blob, 'audio_recording');
-        axios({
-          method: 'post',
-          url: `${OINK_SERVER_URL}:${OINK_SERVER_PORT}/audio_recordings`,
-          data: formData,
-          headers: {'Content-Type': 'multipart/form-data' }
-          })
-          .then(function (response) {
-              //handle success
-              console.log(response);
-              console.log(response.data);
-              setPigLatinOutput(response.data)
-          })
-          .catch(function (response) {
-              console.log(response);
-          });
-      }).catch((e) => {
-        console.error(`Failed to stop recording`, e);
-      })
-    ;
   };
 
   const requestGameWord = async() => {
@@ -208,11 +165,11 @@ const App = () => {
       }
 
       <div className="pigLatinOutput">
-      { isGameModeActivated ?
-        gameWord.englishWord :
-        pigLatinOutput
-      }
-
+        {
+          isGameModeActivated ?
+            gameWord.englishWord :
+            pigLatinOutput
+        }
       </div>
 
       <input
@@ -224,10 +181,9 @@ const App = () => {
         placeholder="This little piggy went to market..."
       />
       <div className="buttonsBox">
-        <button className="button-2" inline="true" onClick={startRecord} disabled={recordingState}><span className="text">Talk</span></button>
-        <button className="button-3" inline="true" onClick={stopRecord} disabled={!recordingState}><span className="text">Stop Talking</span></button>
+        <RecordingButton onTranscribeResult={handleTranscribeResult}/>
         <span className="span"></span>
-        <button className="button-1" inline="true" onClick={resetEverything}><span className="text">Reset</span></button>
+        <button className="genericButton" onClick={resetEverything}><span className="text">Reset</span></button>
       </div>
       <div className="gameSwitchContainer">
         <label className="switch">
@@ -236,10 +192,10 @@ const App = () => {
         </label>
         <div className="switchText">Do you want to play a game?</div>
       </div>
+
       <div className="verticalSpacing"></div>
     </div>
   );
-
 }
 
 export default App;

@@ -1,9 +1,5 @@
 import './GameContainer.css';
 
-import { useState } from 'react';
-
-import _ from "lodash";
-
 const GameMode = ({timeRemaining, isGameRunning, gameScore}) => {
 
   return (

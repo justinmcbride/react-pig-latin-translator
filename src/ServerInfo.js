@@ -1,5 +1,3 @@
-// export const OINK_SERVER_URL = `https://oink.mersive.lan`;
-// export const OINK_SERVER_PORT = 5001;
+const OinkServer = `${process.env.REACT_APP_OINK_SERVER_URL}:${process.env.REACT_APP_OINK_SERVER_PORT}`
 
-export const OINK_SERVER_URL = `http://localhost`;
-export const OINK_SERVER_PORT = 5000;
+export default OinkServer;

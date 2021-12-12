@@ -1,11 +1,107 @@
-import './GameContainer.css';
+import {useState, useEffect} from 'react';
 
-const GameMode = ({timeRemaining, isGameRunning, gameScore}) => {
+import {useTimer} from 'react-timer-hook';
+import axios from 'axios';
+import _ from 'lodash';
+import styled from 'styled-components';
+
+import SingleWordInput from './SingleWordInput';
+import OinkServer from './ServerInfo';
+
+const GameScore = styled.span`
+  color: white;
+  font-size: calc(10px + 2vmin)
+`;
+
+const GameTime = styled.span`
+  color: white;
+  font-size: calc(10px + 2vmin)
+`;
+
+const Spacer = styled.span`
+  flex-grow: 1;
+`;
+
+const GameStateContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const Prompt = styled.div`
+`;
+
+const WordToType = styled.span`
+  color: white;
+`;
+
+const GameMode = ({increasePigSpinSpeed}) => {
+  const [isGameModeActivated, setIsGameModeActivated] = useState(true);
+
+  const [gameWord, setGameWord] = useState(``);
+  const [gameScore, setGameScore] = useState(0);
+
+  useEffect(() => {
+    const fetchWordFunction = async() => {
+      const newWord = await requestGameWord();
+      setGameWord(newWord);
+    };
+
+    fetchWordFunction();
+  }, [gameScore]);
+
+  const handleTimerExpired = () => {
+    console.log(`Game time expired!`);
+    setIsGameModeActivated(false);
+  };
+
+  const expiryTimestamp = new Date();
+  expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 45);
+
+  const {
+    seconds: secondsRemaining,
+  } = useTimer({ expiryTimestamp, onExpire: handleTimerExpired});
+
+  const requestGameWord = async() => {
+    try {
+      const res = await axios.get(`${OinkServer}/getWord`);
+      const response = res.data;
+        if (!_.has(response, `englishWord`) || !_.has(response, `pigLatinWord`)) {
+          console.error(`requestGameWord: bad response: response=[${JSON.stringify(response)}]`);
+        }
+  
+      return response;
+    } catch (err) {
+      console.error(`requestGameWord: failure: ${err}`);
+      return {};
+      // TODO: maybe broken
+    }
+  }
+
+  const handleSubmitWord = (inputWord) => {
+    if (inputWord === gameWord.pigLatinWord) {
+      console.log(`Correct!`);
+      setGameScore(gameScore + 1);
+      increasePigSpinSpeed();
+    }
+    else {
+      console.log(`Incorrect!`);
+    }
+  }
 
   return (
     <div className="gameModeContainer">
-      <span>Score: {gameScore}</span><br/>
-      <span>Time: {timeRemaining}</span>
+      <GameStateContainer>
+        <GameScore>Score: {gameScore}</GameScore>
+        <Spacer/>
+        <GameTime>Time: {secondsRemaining}</GameTime>
+      </GameStateContainer>
+      
+      { isGameModeActivated
+        ? <Prompt>Translate: <WordToType>{gameWord.englishWord}</WordToType></Prompt>
+        : <Prompt>Game Over!</Prompt>
+      }
+
+      <SingleWordInput isDisabled={!isGameModeActivated} onSubmitWord={handleSubmitWord}/>
     </div>
   )
 };

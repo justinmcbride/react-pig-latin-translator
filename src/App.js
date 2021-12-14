@@ -34,7 +34,7 @@ const PigImageSpin = keyframes`
 `;
 
 const PigImage = styled.img`
-  max-width: 100%;
+  max-width: 30%;
   height: auto;
   pointer-events: none;
   padding: 5%;

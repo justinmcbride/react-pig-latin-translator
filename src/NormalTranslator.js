@@ -1,10 +1,8 @@
 import {useState} from 'react';
 
-import axios from 'axios';
-import _ from 'lodash';
 import styled, {keyframes} from 'styled-components';
 
-import OinkServer from './ServerInfo';
+import translator from './translator';
 import SingleWordInput from './SingleWordInput';
 
 const OutputAnimation = keyframes`
@@ -45,28 +43,18 @@ const NormalTranslator = () => {
 
   const requestTranslateWord = (wordToTranslate) => {
     console.log(`requestTranslateWord: wordToTranslate=[${wordToTranslate}]`);
-    axios
-      .get(`${OinkServer}/oink/${wordToTranslate}`)
-      .then(res => {
-        const response = res.data;
-        if (!_.has(response, `stemChangeIndex`) || !_.has(response, `pigLatinWord`)) {
-          console.error(`requestTranslateWord: bad response: response=[${JSON.stringify(response)}]`);
-        }
 
-        setPigLatinOutput(`${pigLatinOutput} ${response.pigLatinWord}`);
+    const translatedWord = translator(wordToTranslate);
 
-        setAnimatingWords([...animatingWords, response]);
-        console.log(`requestTranslateWord: wordToTranslate=[${wordToTranslate}] stemChangeIndex=[${response.stemChangeIndex}] pigLatinWord=[${response.pigLatinWord}]`);
-      })
-      .catch(err => {
-        console.error(`requestTranslateWord: failure: ${err}`);
-      })
-    ;
+    setPigLatinOutput(`${pigLatinOutput} ${translatedWord}`);
+    setAnimatingWords([...animatingWords, translatedWord]);
+
+    console.log(`requestTranslateWord: wordToTranslate=[${wordToTranslate}] translatedWord=[${translatedWord}]`);
   };
 
   const animatedWords = [];
   for (const word of animatingWords) {
-    animatedWords.push(<AnimatedWord>{word.pigLatinWord}</AnimatedWord>);
+    animatedWords.push(<AnimatedWord>{word}</AnimatedWord>);
   }
 
   return (

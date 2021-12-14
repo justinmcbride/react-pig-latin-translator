@@ -1,11 +1,8 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 
-import {useReactMediaRecorder} from 'react-media-recorder';
-import FormData from 'form-data';
-import axios from 'axios';
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import styled from 'styled-components';
-
-import OinkServer from './ServerInfo';
+import translator from './translator';
 
 const EnglishOutput = styled.div`
 `;
@@ -54,59 +51,52 @@ const SpeechToTextTranscribing = () => {
   const [transcribedEnglish, setTranscribedEnglish] = useState(``);
   const [transcribedPigLatin, setTranscribedPigLatin] = useState(``);
 
-  const [isAudioRecording, setIsAudioRecording] = useState(false);
-
-  const handleRecordingStopped = (blobUrl, blob) => {
-    setIsAudioRecording(false);
-    console.log(`Recording stopped.`);
-
-    const formData = new FormData();
-    formData.append('file', blob, 'audio_recording');
-    axios({
-      method: 'post',
-      url: `${OinkServer}/transcribeAndTranslate`,
-      data: formData,
-      headers: {'Content-Type': 'multipart/form-data'}
-    })
-    .then(res => {
-      const transcriptionResults = res.data;
-      console.log(`Received transcriptions: english=[${transcriptionResults.englishWords}] pigLatin=[${transcriptionResults.pigLatinWords}]`)
-      setTranscribedEnglish(transcriptionResults.englishWords.join(' '));
-      setTranscribedPigLatin(transcriptionResults.pigLatinWords.join(' '));
-    })
-    .catch(err => {
-      console.error(`handleRecordingStopped: error posting data: ${err}`);
-    });
-  }
-
   const {
-    startRecording,
-    stopRecording,
-  } = useReactMediaRecorder({onStop: handleRecordingStopped});
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition
+  } = useSpeechRecognition();
+
+  useEffect(() => {
+    setTranscribedEnglish(transcript);
+
+    let pigLatinOutput = ``;
+    for(const englishWord of transcript.split(' ')) {
+      if (englishWord.length === 0) continue; 
+      pigLatinOutput += ` ` + translator(englishWord);
+    }
+    setTranscribedPigLatin(pigLatinOutput);
+
+    console.log(`Received transcription: english=[${transcript}] pigLatin=[${pigLatinOutput}]`);
+  }, [transcript]);
 
   const handleRecordingButtonClicked = () => {
-    if (!isAudioRecording) {
+    if (!listening) {
       console.log(`Attempting to start recording`);
-      startRecording();
-      setIsAudioRecording(true);
+      SpeechRecognition.startListening({ continuous: true });
     }
     else {
       console.log(`Attempting to stop recording`);
-      stopRecording();
+      SpeechRecognition.stopListening();
     }
   }
 
-  return (
-    <div>
-      <RecordingButton onClick={handleRecordingButtonClicked}>
-        <RecordingButtonText>
-          { !isAudioRecording ? `Transcribe Speech` : `Stop Transcribing` }
-        </RecordingButtonText>
-      </RecordingButton>
-      {transcribedEnglish.length ? <EnglishOutput>English: {transcribedEnglish}</EnglishOutput> : null}
-      {transcribedPigLatin.length ? <PigLatinOutput>Pig Latin: {transcribedPigLatin}</PigLatinOutput> : null}
-    </div>
-  );
+  if (browserSupportsSpeechRecognition) {
+    return <div>
+      Browser does not support speech recognition.
+    </div>;
+  }
+
+  return <div>
+    <RecordingButton onClick={handleRecordingButtonClicked}>
+      <RecordingButtonText>
+        { listening ? `Stop Transcribing` : `Transcribe Speech` }
+      </RecordingButtonText>
+    </RecordingButton>
+    {transcribedEnglish.length ? <EnglishOutput>English: {transcribedEnglish}</EnglishOutput> : null}
+    {transcribedPigLatin.length ? <PigLatinOutput>Pig Latin: {transcribedPigLatin}</PigLatinOutput> : null}
+  </div>;
 };
 
 export default SpeechToTextTranscribing;

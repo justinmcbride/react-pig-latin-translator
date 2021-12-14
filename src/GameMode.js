@@ -1,12 +1,12 @@
 import {useState, useEffect} from 'react';
 
 import {useTimer} from 'react-timer-hook';
-import axios from 'axios';
-import _ from 'lodash';
-import styled from 'styled-components';
 
+import styled from 'styled-components';
+import randomWords from 'random-words';
+
+import translator from './translator';
 import SingleWordInput from './SingleWordInput';
-import OinkServer from './ServerInfo';
 
 const GameScore = styled.span`
   color: white;
@@ -41,12 +41,12 @@ const GameMode = ({increasePigSpinSpeed}) => {
   const [gameScore, setGameScore] = useState(0);
 
   useEffect(() => {
-    const fetchWordFunction = async() => {
-      const newWord = await requestGameWord();
-      setGameWord(newWord);
-    };
+    const randomWord = randomWords();
 
-    fetchWordFunction();
+    setGameWord({
+      englishWord: randomWord,
+      pigLatinWord: translator(randomWord),
+    });
   }, [gameScore]);
 
   const handleTimerExpired = () => {
@@ -60,22 +60,6 @@ const GameMode = ({increasePigSpinSpeed}) => {
   const {
     seconds: secondsRemaining,
   } = useTimer({ expiryTimestamp, onExpire: handleTimerExpired});
-
-  const requestGameWord = async() => {
-    try {
-      const res = await axios.get(`${OinkServer}/getWord`);
-      const response = res.data;
-        if (!_.has(response, `englishWord`) || !_.has(response, `pigLatinWord`)) {
-          console.error(`requestGameWord: bad response: response=[${JSON.stringify(response)}]`);
-        }
-  
-      return response;
-    } catch (err) {
-      console.error(`requestGameWord: failure: ${err}`);
-      return {};
-      // TODO: maybe broken
-    }
-  }
 
   const handleSubmitWord = (inputWord) => {
     if (inputWord === gameWord.pigLatinWord) {

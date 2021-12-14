@@ -52,6 +52,14 @@ const VerticalSpacer = styled.div`
   flex-grow: 1;
 `;
 
+const Link = styled.a`
+  color: white;
+`;
+
+const Attribution = styled.div`
+  font-size: 1vmin;
+`;
+
 const App = () => {
   const [pigSpinSpeed, setPigSpinSpeed] = useState(20);
 
@@ -63,7 +71,7 @@ const App = () => {
     <AppContainer>
       <AppTitle>English-to-Pig Latin Translator</AppTitle>
       <PigImage
-        src="/pigggggy.png"
+        src="/LargePig.png"
         alt="This piggy went to market"
         pigSpinSpeed={pigSpinSpeed}
       />
@@ -88,6 +96,7 @@ const App = () => {
         alt="Innovation that excites"
         src="/mersive2.png"
       />
+      <Attribution>Icons made by <Link href="https://www.flaticon.com/authors/hery-mery" title="Hery Mery">Hery Mery</Link> and <Link href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</Link> from <Link href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</Link></Attribution>
     </AppContainer>
   );
 }

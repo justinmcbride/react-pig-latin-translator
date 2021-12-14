@@ -82,7 +82,7 @@ const SpeechToTextTranscribing = () => {
     }
   }
 
-  if (browserSupportsSpeechRecognition) {
+  if (!browserSupportsSpeechRecognition) {
     return <div>
       Browser does not support speech recognition.
     </div>;

@@ -10,12 +10,12 @@ import SingleWordInput from './SingleWordInput';
 
 const GameScore = styled.span`
   color: white;
-  font-size: calc(10px + 2vmin)
+  font-size: 1.5em;
 `;
 
 const GameTime = styled.span`
   color: white;
-  font-size: calc(10px + 2vmin)
+  font-size: 1.5em;
 `;
 
 const Spacer = styled.span`
@@ -28,6 +28,7 @@ const GameStateContainer = styled.div`
 `;
 
 const Prompt = styled.div`
+  font-size: 2em;
 `;
 
 const WordToType = styled.span`

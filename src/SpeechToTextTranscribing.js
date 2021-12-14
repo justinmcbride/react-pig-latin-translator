@@ -54,7 +54,6 @@ const SpeechToTextTranscribing = () => {
   const {
     transcript,
     listening,
-    resetTranscript,
     browserSupportsSpeechRecognition
   } = useSpeechRecognition();
 

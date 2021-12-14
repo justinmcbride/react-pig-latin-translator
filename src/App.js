@@ -17,11 +17,11 @@ const AppContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(20px + 2vmin);
   color: pink;
 `;
 
 const AppTitle = styled.header`
+  font-size: 2em;
 `;
 
 const PigImageSpin = keyframes`
@@ -34,18 +34,19 @@ const PigImageSpin = keyframes`
 `;
 
 const PigImage = styled.img`
-  max-width: 30%;
+  max-width: 300px;
   height: auto;
   pointer-events: none;
   padding: 5%;
   animation: ${PigImageSpin} infinite ${props => props.pigSpinSpeed || 0}s linear;
 `;
 
-const MersiveLogo = styled.img`
-  width: 10%;
-  position: absolute;
-  bottom: 0;
-  right: 0;
+const TabsContainer = styled.div`
+  min-width: 60%;
+`;
+
+const TabsLabelContainer = styled.div`
+  font-size: 1.2em;
 `;
 
 const VerticalSpacer = styled.div`
@@ -75,27 +76,27 @@ const App = () => {
         alt="This piggy went to market"
         pigSpinSpeed={pigSpinSpeed}
       />
-      <Tabs>
-        <TabList>
-          <Tab>Translate</Tab>
-          <Tab>Speech-To-Text</Tab>
-          <Tab>Game</Tab>
-        </TabList>
-        <TabPanel>
-          <NormalTranslator/>
-        </TabPanel>
-        <TabPanel>
-          <SpeechToTextTranscribing/>
-        </TabPanel>
-        <TabPanel>
-          <GameMode increasePigSpinSpeed={increasePigSpinSpeed}/>
-        </TabPanel>
-      </Tabs>
+      <TabsContainer>
+        <Tabs>
+          <TabsLabelContainer>
+            <TabList>
+              <Tab>Translate</Tab>
+              <Tab>Speech-To-Text</Tab>
+              <Tab>Game</Tab>
+            </TabList>
+          </TabsLabelContainer>
+          <TabPanel>
+            <NormalTranslator/>
+          </TabPanel>
+          <TabPanel>
+            <SpeechToTextTranscribing/>
+          </TabPanel>
+          <TabPanel>
+            <GameMode increasePigSpinSpeed={increasePigSpinSpeed}/>
+          </TabPanel>
+        </Tabs>
+      </TabsContainer>
       <VerticalSpacer/>
-      <MersiveLogo
-        alt="Innovation that excites"
-        src="/mersive2.png"
-      />
       <Attribution>Icons made by <Link href="https://www.flaticon.com/authors/hery-mery" title="Hery Mery">Hery Mery</Link> and <Link href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</Link> from <Link href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</Link></Attribution>
     </AppContainer>
   );

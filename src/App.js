@@ -1,7 +1,8 @@
 import {useState} from 'react';
 
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
-import styled, {keyframes} from 'styled-components';
+import styled from 'styled-components';
+import Anime from 'react-anime';
 
 import NormalTranslator from './NormalTranslator';
 import GameMode from './GameMode';
@@ -24,21 +25,11 @@ const AppContainer = styled.div`
 const AppTitle = styled.header`
 `;
 
-const PigImageSpin = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
 const PigImage = styled.img`
   max-width: 100%;
   height: auto;
   pointer-events: none;
   padding: 5%;
-  animation: ${PigImageSpin} infinite ${props => props.pigSpinSpeed || 0}s linear;
 `;
 
 const MersiveLogo = styled.img`
@@ -61,20 +52,22 @@ const Attribution = styled.div`
 `;
 
 const App = () => {
-  const [pigSpinSpeed, setPigSpinSpeed] = useState(20);
+  const [pigSpinSpeed, setPigSpinSpeed] = useState(20000);
 
   const increasePigSpinSpeed = () => {
     setPigSpinSpeed(pigSpinSpeed * .8);
+    console.log(`New pig spin speed: ${pigSpinSpeed}`);
   };
 
   return (
     <AppContainer>
       <AppTitle>English-to-Pig Latin Translator</AppTitle>
-      <PigImage
-        src="/LargePig.png"
-        alt="This piggy went to market"
-        pigSpinSpeed={pigSpinSpeed}
-      />
+      <Anime rotate={{ value: 360, duration: pigSpinSpeed, easing: "linear" }} loop={true}>
+        <PigImage
+          src="/LargePig.png"
+          alt="This piggy went to market"
+        />
+      </Anime>
       <Tabs>
         <TabList>
           <Tab>Translate</Tab>
@@ -96,6 +89,7 @@ const App = () => {
         alt="Innovation that excites"
         src="/mersive2.png"
       />
+      <button onClick={increasePigSpinSpeed}>Test </button>
       <Attribution>Icons made by <Link href="https://www.flaticon.com/authors/hery-mery" title="Hery Mery">Hery Mery</Link> and <Link href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</Link> from <Link href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</Link></Attribution>
     </AppContainer>
   );

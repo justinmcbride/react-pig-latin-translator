@@ -1,51 +1,50 @@
-export default function translator(word) {
-    const vowel = {a:'a', e:'e', i:'i', o:'o', u:'u'}
-    // const punctuation = {p:'.', q:'?', r:'!', s:',', t:'-'}
+const VOWELS = ['a', 'e', 'i', 'o', 'u'];
 
-    let index= 0
-    let hasVowel = 0
-    // let hasPunctuation = 0
+const isVowel = (letter) => {
+  return VOWELS.some(actualVowel => actualVowel === letter);
+};
 
-    for (index; index < word.length; index++) {
-        if (word[index] in vowel) {
-            hasVowel = 1
-            break;
-        }
-    }
-    if (hasVowel === 0) {
-      let index2 = 0
-      for (index2; index2 < word.length; index2++) {
-        if (word[index2] === 'y') {
-          index=index2
-          break
-        }
-      }
-    }
+const englishToPigLatin = (word) => {
+  if (word.length === 0) return ``;
+  let translatedWordStem = ``;
+  let suffix = ``;
 
-    if (word) {
-        const consonants = word.replace(word.substr(index), 'ay')
-        const restOfWord = word.substr(index)
-        const pigLatin = restOfWord.concat('', consonants)
-        console.log(pigLatin)
-
-        // if (word[index] in punctuation) {
-        //     pigLatin.concat('', )
-        // }
-
-        return pigLatin
+  if (word.length === 1) {
+    translatedWordStem = word;
+    if (isVowel(word[0])) {
+      suffix = `yay`;
     }
     else {
-      return ""
+      suffix = `ay`;
     }
+  }
+  else if (isVowel(word[0])) {
+    translatedWordStem = word;
+    suffix = `yay`;
+  }
+  else {
+    let hasAnyVowels = false;
+    for (let i in word) {
+      const currentLetter = word[i];
+      if (isVowel(currentLetter)) {
+        const consonants = word.substr(0, i);
+        const remainderOfWord = word.substr(i);
+        translatedWordStem = `${remainderOfWord}${consonants}`;
+        suffix = `ay`;
+        hasAnyVowels = true;
+        break;
+      }
+      else {
+        continue;
+      }
+    }
+    if (!hasAnyVowels) {
+      translatedWordStem = word;
+      suffix = `ay`;
+    }
+  }
 
+  return `${translatedWordStem}${suffix}`;
 }
 
-// const readline = require('readline').createInterface({
-//   input: process.stdin,
-//   output: process.stdout
-// });
-
-// readline.question('Enter an English word or phrase: ', word => {
-//   console.log("Pig Latin:", translator(word));
-//   readline.close();
-// });
+export default englishToPigLatin;

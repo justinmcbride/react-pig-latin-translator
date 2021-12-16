@@ -1,51 +1,65 @@
-export default function translator(word) {
-    const vowel = {a:'a', e:'e', i:'i', o:'o', u:'u'}
-    // const punctuation = {p:'.', q:'?', r:'!', s:',', t:'-'}
+const VOWELS = [`a`, `e`, `i`, `o`, `u`, `y`];
 
-    let index= 0
-    let hasVowel = 0
-    // let hasPunctuation = 0
+const isVowel = (letter) => {
+  return VOWELS.some(actualVowel => actualVowel === letter.toLowerCase());
+};
 
-    for (index; index < word.length; index++) {
-        if (word[index] in vowel) {
-            hasVowel = 1
-            break;
-        }
-    }
-    if (hasVowel === 0) {
-      let index2 = 0
-      for (index2; index2 < word.length; index2++) {
-        if (word[index2] === 'y') {
-          index=index2
-          break
-        }
+const isUpperCase = (letter) => {
+  return letter === letter.toUpperCase();
+};
+
+const isLowerCase = (letter) => {
+  return letter === letter.toLowerCase();
+};
+
+const englishToPigLatin = (word) => {
+  word = word.trim();
+  if (word.length === 0) return ``;
+
+  let translatedWordStem = ``;
+  let suffix = ``;
+
+  if (word[0] !== `y` && isVowel(word[0])) {
+    translatedWordStem = word;
+    suffix = `yay`;
+  }
+  else {
+    let hasAnyVowels = false;
+    for (let i = 0; i < word.length; i++) {
+      if (i === 0) continue;
+      const currentLetter = word[i];
+      if (isVowel(currentLetter)) {
+        const consonants = word.substr(0, i);
+        const remainderOfWord = word.substr(i);
+        translatedWordStem = `${remainderOfWord}${consonants}`;
+        suffix = `ay`;
+        hasAnyVowels = true;
+        break;
+      }
+      else {
+        continue;
       }
     }
-
-    if (word) {
-        const consonants = word.replace(word.substr(index), 'ay')
-        const restOfWord = word.substr(index)
-        const pigLatin = restOfWord.concat('', consonants)
-        console.log(pigLatin)
-
-        // if (word[index] in punctuation) {
-        //     pigLatin.concat('', )
-        // }
-
-        return pigLatin
+    if (!hasAnyVowels) {
+      translatedWordStem = word;
+      suffix = `ay`;
     }
-    else {
-      return ""
-    }
+  }
 
+  if (isUpperCase(word)) {
+    translatedWordStem = translatedWordStem.toUpperCase();
+    suffix = suffix.toUpperCase();
+  }
+  else {
+    const isFirstLetterCapital = isUpperCase(word[0]);
+    const remainderOfWord = word.substr(1);
+    const remainderLowerCase = (remainderOfWord.length > 0 && isLowerCase(remainderOfWord));
+    if (isFirstLetterCapital && remainderLowerCase) {
+      translatedWordStem = translatedWordStem[0].toUpperCase() + translatedWordStem.substring(1).toLowerCase();
+    }
+  }
+
+  return `${translatedWordStem}${suffix}`;
 }
 
-// const readline = require('readline').createInterface({
-//   input: process.stdin,
-//   output: process.stdout
-// });
-
-// readline.question('Enter an English word or phrase: ', word => {
-//   console.log("Pig Latin:", translator(word));
-//   readline.close();
-// });
+export default englishToPigLatin;

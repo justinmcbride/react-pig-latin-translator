@@ -38,19 +38,18 @@ const NormalTranslator = () => {
   const [animatingWords, setAnimatingWords] = useState([]);
 
   const handleSubmitWord = (inputWord) => {
-    requestTranslateWord(inputWord);
+    console.log(`handleSubmitWord: inputWord=[${inputWord}]`);
+
+    const translatedWord = translator(inputWord);
+
+    // Because this can be called into a loop, and we want to ensure that ALL
+    // updates to the state aren't batched into a single call, use the state
+    // updater syntax. https://stackoverflow.com/a/66560573/4493426
+    setPigLatinOutput(previousState => `${previousState} ${translatedWord}`);
+    setAnimatingWords(previousState => [...previousState, translatedWord]);
+
+    console.log(`handleSubmitWord: inputWord=[${inputWord}] translatedWord=[${translatedWord}]`);
   }
-
-  const requestTranslateWord = (wordToTranslate) => {
-    console.log(`requestTranslateWord: wordToTranslate=[${wordToTranslate}]`);
-
-    const translatedWord = translator(wordToTranslate);
-
-    setPigLatinOutput(`${pigLatinOutput} ${translatedWord}`);
-    setAnimatingWords([...animatingWords, translatedWord]);
-
-    console.log(`requestTranslateWord: wordToTranslate=[${wordToTranslate}] translatedWord=[${translatedWord}]`);
-  };
 
   const animatedWords = [];
   for (const word of animatingWords) {

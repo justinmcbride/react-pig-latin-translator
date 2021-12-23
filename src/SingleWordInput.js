@@ -11,28 +11,32 @@ const InputBox = styled.input`
   text-align: center;
 `;
 
+/*
+Even though this component is called "SingleWordInput", multiple words can actually be entered.
+The concept is that only one word at a time is allowed, and that's determined by entering a space.
+However, users can paste text that has multiple words. So we handle both cases in this component.
+*/
+
 const SingleWordInput = ({isDisabled, onSubmitWord}) => {
   const [englishInput, setEnglishInput] = useState(``);
 
   const handleChange = (e) => {
-    const currentInputText = e.target.value;
-    const trimmedInput = currentInputText.trimStart();
+    const allInputText = e.target.value;
 
-    if (trimmedInput.length === 0) {
-      setEnglishInput(``);
-      return;
+    const splitInputText = allInputText.split(' ');
+    if (splitInputText.length === 1) {
+      setEnglishInput(splitInputText[0]);
     }
-
-    const wholeInputWord = trimmedInput.trimEnd();
-    if (wholeInputWord.length !== trimmedInput.length) {
-      console.log(`Word completed: [${wholeInputWord}]`);
-      setEnglishInput(``);
-      onSubmitWord(wholeInputWord);
-      
-      return;
+    else {
+      for (const currentInputText of splitInputText) {
+        if (currentInputText.length === 0) {
+          continue;
+        }
+        console.log(`Word completed: [${currentInputText}]`);
+        setEnglishInput(``);
+        onSubmitWord(currentInputText);
+      }
     }
-
-    setEnglishInput(trimmedInput);
   }
 
   return (

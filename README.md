@@ -44,7 +44,3 @@ We welcome contributions to the project! To contribute, follow these guidelines:
    git push origin my-feature-branch
    ```
 5. Create a pull request with a clear description of your changes.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.

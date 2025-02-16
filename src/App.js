@@ -1,3 +1,5 @@
+"use client";
+
 import {useState} from 'react';
 
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
@@ -5,7 +7,6 @@ import styled, {keyframes} from 'styled-components';
 
 import NormalTranslator from './NormalTranslator';
 import GameMode from './GameMode';
-import SpeechToTextTranscribing from './SpeechToTextTranscribing';
 
 import 'react-tabs/style/react-tabs.css';
 
@@ -81,15 +82,11 @@ const App = () => {
           <TabsLabelContainer>
             <TabList>
               <Tab>Translate</Tab>
-              <Tab>Speech-To-Text</Tab>
               <Tab>Game</Tab>
             </TabList>
           </TabsLabelContainer>
           <TabPanel>
             <NormalTranslator/>
-          </TabPanel>
-          <TabPanel>
-            <SpeechToTextTranscribing/>
           </TabPanel>
           <TabPanel>
             <GameMode increasePigSpinSpeed={increasePigSpinSpeed}/>

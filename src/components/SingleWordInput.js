@@ -1,16 +1,5 @@
 import { useState } from 'react';
 
-import styled from 'styled-components';
-
-const InputBox = styled.input`
-  color: black;
-  width: 100%;
-  border-radius: 4px;
-  box-sizing: border-box;
-  padding: 20px 20px;
-  text-align: center;
-`;
-
 /*
 Even though this component is called "SingleWordInput", multiple words can actually be entered.
 The concept is that only one word at a time is allowed, and that's determined by entering a space.
@@ -40,12 +29,13 @@ const SingleWordInput = ({isDisabled, onSubmitWord}) => {
   }
 
   return (
-    <InputBox
+    <input
       value={englishInput}
       type="text"
       onChange={handleChange}
       disabled={isDisabled}
       placeholder="This little piggy went to market..."
+      className="text-black w-full rounded p-5 text-center box-border"
     />
   );
 };

@@ -2,38 +2,10 @@ import {useState, useEffect} from 'react';
 
 import {useTimer} from 'react-timer-hook';
 
-import styled from 'styled-components';
 import randomWords from 'random-words';
 
-import translator from './translator';
-import SingleWordInput from './SingleWordInput';
-
-const GameScore = styled.span`
-  color: white;
-  font-size: 1.5em;
-`;
-
-const GameTime = styled.span`
-  color: white;
-  font-size: 1.5em;
-`;
-
-const Spacer = styled.span`
-  flex-grow: 1;
-`;
-
-const GameStateContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
-const Prompt = styled.div`
-  font-size: 2em;
-`;
-
-const WordToType = styled.span`
-  color: white;
-`;
+import translator from '@/lib/translator';
+import SingleWordInput from '@/components/SingleWordInput';
 
 const GameMode = ({increasePigSpinSpeed}) => {
   const [isGameModeActivated, setIsGameModeActivated] = useState(true);
@@ -75,15 +47,15 @@ const GameMode = ({increasePigSpinSpeed}) => {
 
   return (
     <div className="gameModeContainer">
-      <GameStateContainer>
-        <GameScore>Score: {gameScore}</GameScore>
-        <Spacer/>
-        <GameTime>Time: {secondsRemaining}</GameTime>
-      </GameStateContainer>
+      <div className="flex flex-row">
+        <span className="text-white text-2xl">Score: {gameScore}</span>
+        <span className="flex grow" />
+        <span className="text-white text-2xl">Time: {secondsRemaining}</span>
+      </div>
       
       { isGameModeActivated
-        ? <Prompt>Translate: <WordToType>{gameWord.englishWord}</WordToType></Prompt>
-        : <Prompt>Game Over!</Prompt>
+        ? <div className="text-4xl">Translate: <span className="text-white">{gameWord.englishWord}</span></div>
+        : <div className="text-4xl">Game Over!</div>
       }
 
       <SingleWordInput isDisabled={!isGameModeActivated} onSubmitWord={handleSubmitWord}/>

@@ -12,7 +12,8 @@
     "react-animated-text": "^0.1.4",
     "react-dom": "^19.0.0",
     "react-tabs": "^6",
-    "react-timer-hook": "^3.0.5"
+    "react-timer-hook": "^3.0.5",
+    "tailwindcss-animated": "^2.0.0"
   },
   "scripts": {
     "dev": "next dev",
@@ -30,11 +31,11 @@
     "node": "23.x"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3",
     "autoprefixer": "^10.4.20",
-    "postcss": "^8",
-    "tailwindcss": "^3",
     "eslint": "^9",
     "eslint-config-next": "15.1.7",
-    "@eslint/eslintrc": "^3"
+    "postcss": "^8",
+    "tailwindcss": "^3"
   }
 }

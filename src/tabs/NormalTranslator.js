@@ -48,7 +48,7 @@ const NormalTranslator = () => {
     <div>
       <SingleWordInput onSubmitWord={handleSubmitWord}/>
       <div className="text-white font-lg">{pigLatinOutput}</div>
-      <div className="h-[20px]">{animatedWords}</div>
+      <div className="h-5">{animatedWords}</div>
     </div>
   )
 }

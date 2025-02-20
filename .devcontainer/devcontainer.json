@@ -1,4 +1,6 @@
 {
-	"image": "mcr.microsoft.com/devcontainers/universal:2",
-  "forwardPorts": [3000]
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
+  "forwardPorts": [
+    3000
+  ]
 }

@@ -20,7 +20,9 @@ export default function Page() {
   return (
     <div className="text-center min-h-screen flex flex-col justify-center items-center text-[pink] bg-[#282c34]">
       <header className="text-4xl">Translate English to Pig Latin</header>
-      <SpinningPig />
+      <div className="p-[5%]">
+        <SpinningPig />
+      </div>
       <div className="min-w-[60%]">
         <Tabs className="text-md">
           <TabList>

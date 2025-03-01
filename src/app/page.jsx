@@ -9,6 +9,7 @@ import GameMode from "@/tabs/GameMode";
 
 import "react-tabs/style/react-tabs.css";
 import SpinningPig from "@/components/SpinningPig";
+import { AnimatedWord } from "@/components/AnimatedWord";
 
 export default function Page() {
   const [pigSpinSpeed, setPigSpinSpeed] = useState(20);
@@ -23,6 +24,7 @@ export default function Page() {
       <div className="p-[5%]">
         <SpinningPig />
       </div>
+      <AnimatedWord originalWord="Hello" translatedWord="Ellohay" leadingConsonants="H" trailingEnd="ello" suffix="ay" />
       <div className="min-w-[60%]">
         <Tabs className="text-md">
           <TabList>

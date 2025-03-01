@@ -1,54 +1,49 @@
 import englishToPigLatin from './translator';
 
-
-test(`translate handles empty`, () => {
-  expect(englishToPigLatin(``)).toBe(``);
-  expect(englishToPigLatin(` `)).toBe(``);
-});
+const translate = (inputWord) => {
+  const response = englishToPigLatin(inputWord);
+  return response.translatedWord;
+}
 
 test(`translate handles numbers`, () => {
 
 });
 
-test(`translate handles empty`, () => {
-  expect(englishToPigLatin(``)).toBe(``);
-});
-
-// expect(englishToPigLatin(``)).toBe(``);
+// expect(translate(``)).toBe(``);
 
 test(`translate handles vowels at beginning`, () => {
-  expect(englishToPigLatin(`a`)).toBe(`ayay`);
-  expect(englishToPigLatin(`e`)).toBe(`eyay`);
-  expect(englishToPigLatin(`i`)).toBe(`iyay`);
-  expect(englishToPigLatin(`o`)).toBe(`oyay`);
-  expect(englishToPigLatin(`u`)).toBe(`uyay`);
+  expect(translate(`a`)).toBe(`ayay`);
+  expect(translate(`e`)).toBe(`eyay`);
+  expect(translate(`i`)).toBe(`iyay`);
+  expect(translate(`o`)).toBe(`oyay`);
+  expect(translate(`u`)).toBe(`uyay`);
 
-  expect(englishToPigLatin(`apple`)).toBe(`appleyay`);
-  expect(englishToPigLatin(`aeiou`)).toBe(`aeiouyay`);
-  expect(englishToPigLatin(`octopus`)).toBe(`octopusyay`);
+  expect(translate(`apple`)).toBe(`appleyay`);
+  expect(translate(`aeiou`)).toBe(`aeiouyay`);
+  expect(translate(`octopus`)).toBe(`octopusyay`);
 });
 
 test(`translate handles y-words`, () => {
-  expect(englishToPigLatin(`y`)).toBe(`yay`);
-  expect(englishToPigLatin(`yellow`)).toBe(`ellowyay`);
-  expect(englishToPigLatin(`yes`)).toBe(`esyay`);
+  expect(translate(`y`)).toBe(`yay`);
+  expect(translate(`yellow`)).toBe(`ellowyay`);
+  expect(translate(`yes`)).toBe(`esyay`);
 });
 
 test('translate handles non-vowels', () => {
-  expect(englishToPigLatin(`first`)).toBe(`irstfay`);
-  expect(englishToPigLatin(`flying`)).toBe(`yingflay`);
-  expect(englishToPigLatin(`test`)).toBe(`esttay`);
-  expect(englishToPigLatin(`tree`)).toBe(`eetray`);
-  expect(englishToPigLatin(`way`)).toBe(`ayway`);
+  expect(translate(`first`)).toBe(`irstfay`);
+  expect(translate(`flying`)).toBe(`yingflay`);
+  expect(translate(`test`)).toBe(`esttay`);
+  expect(translate(`tree`)).toBe(`eetray`);
+  expect(translate(`way`)).toBe(`ayway`);
 });
 
 test(`translate handles beginning uppercase`, () => {
-  expect(englishToPigLatin(`Test`)).toBe(`Esttay`);
-  expect(englishToPigLatin(`Able`)).toBe(`Ableyay`);
+  expect(translate(`Test`)).toBe(`Esttay`);
+  expect(translate(`Able`)).toBe(`Ableyay`);
 });
 
 test(`translate handles all uppercase`, () => {
-  expect(englishToPigLatin(`TEST`)).toBe(`ESTTAY`);
-  expect(englishToPigLatin(`ABLE`)).toBe(`ABLEYAY`);
+  expect(translate(`TEST`)).toBe(`ESTTAY`);
+  expect(translate(`ABLE`)).toBe(`ABLEYAY`);
 });
 

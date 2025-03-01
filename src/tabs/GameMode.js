@@ -18,7 +18,7 @@ const GameMode = ({increasePigSpinSpeed}) => {
 
     setGameWord({
       englishWord: randomWord,
-      pigLatinWord: translator(randomWord),
+      pigLatinWord: translator(randomWord).translatedWord,
     });
   }, [gameScore]);
 

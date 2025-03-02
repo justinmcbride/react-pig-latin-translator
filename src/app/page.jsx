@@ -9,22 +9,22 @@ import GameMode from "@/tabs/GameMode";
 
 import "react-tabs/style/react-tabs.css";
 import SpinningPig from "@/components/SpinningPig";
-import { AnimatedWord } from "@/components/AnimatedWord";
+
 
 export default function Page() {
-  const [pigSpinSpeed, setPigSpinSpeed] = useState(20);
+  const [pigSpinSpeed, setPigSpinSpeed] = useState(20000);
 
   const increasePigSpinSpeed = () => {
-    setPigSpinSpeed(pigSpinSpeed * 0.8);
+    setPigSpinSpeed(pigSpinSpeed * .8);
   };
 
   return (
-    <div className="text-center min-h-screen flex flex-col justify-center items-center text-[pink] bg-[#282c34]">
+    <div className="w-full text-center flex flex-col justify-center items-center">
       <header className="text-4xl">Translate English to Pig Latin</header>
       <div className="p-[5%]">
-        <SpinningPig />
+        <SpinningPig pigSpinSpeed={pigSpinSpeed}/>
       </div>
-      <AnimatedWord originalWord="Hello" translatedWord="Ellohay" leadingConsonants="H" trailingEnd="ello" suffix="ay" />
+      {/* <button onClick={increasePigSpinSpeed}>Increase Pig Spin Speed</button> */}
       <div className="min-w-[60%]">
         <Tabs className="text-md">
           <TabList>
@@ -38,33 +38,6 @@ export default function Page() {
             <GameMode increasePigSpinSpeed={increasePigSpinSpeed} />
           </TabPanel>
         </Tabs>
-      </div>
-      <div className="flex grow" />
-      <div className="text-xs">
-        Icons made by{" "}
-        <a
-          href="https://www.flaticon.com/authors/hery-mery"
-          title="Hery Mery"
-          className="text-white"
-        >
-          Hery Mery
-        </a>{" "}
-        and{" "}
-        <a
-          href="https://www.flaticon.com/authors/freepik"
-          title="Freepik"
-          className="text-white"
-        >
-          Freepik
-        </a>{" "}
-        from{" "}
-        <a
-          href="https://www.flaticon.com/"
-          title="Flaticon"
-          className="text-white"
-        >
-          www.flaticon.com
-        </a>
       </div>
     </div>
   );

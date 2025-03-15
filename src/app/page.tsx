@@ -9,6 +9,7 @@ import GameMode from "@/tabs/GameMode";
 
 import "react-tabs/style/react-tabs.css";
 import SpinningPig from "@/components/SpinningPig";
+import { HowTo } from "@/tabs/HowTo";
 
 export default function Page() {
   const [pigSpinSpeed, setPigSpinSpeed] = useState(20000);
@@ -27,12 +28,16 @@ export default function Page() {
           <TabList>
             <Tab>Translate</Tab>
             <Tab>Game</Tab>
+            <Tab>Teach me!</Tab>
           </TabList>
           <TabPanel>
             <NormalTranslator />
           </TabPanel>
           <TabPanel>
             <GameMode increasePigSpinSpeed={increasePigSpinSpeed} />
+          </TabPanel>
+          <TabPanel>
+            <HowTo />
           </TabPanel>
         </Tabs>
       </div>

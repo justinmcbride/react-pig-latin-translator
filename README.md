@@ -1,23 +1,19 @@
-# About
+# React Pig Latin Translator
 
-This is the frontend for the Pig Latin Translator. It is written in React.
+A fun application that translates English words to Pig Latin, built with NextJS.
 
-## Installation
+## About
 
-To install the project, follow these steps:
+This application allows users to translate words from English to Pig Latin. It includes a game mode where users can test their Pig Latin knowledge against the clock.
 
-1. Clone the repository:
-   ```
-   git clone https://github.com/justinmcbride/react-pig-latin-translator.git
-   ```
-2. Navigate to the project directory:
-   ```
-   cd react-pig-latin-translator
-   ```
-3. Install the dependencies:
-   ```
-   npm install
-   ```
+## Technologies
+
+- NextJS
+- React
+- TypeScript
+- Tailwind CSS
+- Motion (for animations)
+
 
 ## Usage
 
@@ -25,7 +21,7 @@ To use the project, follow these steps:
 
 1. Start the development server:
    ```
-   npm start
+   npm run dev
    ```
 2. Open your browser and navigate to `http://localhost:3000` to access the Pig Latin Translator.
 
@@ -44,3 +40,7 @@ We welcome contributions to the project! To contribute, follow these guidelines:
    git push origin my-feature-branch
    ```
 5. Create a pull request with a clear description of your changes.
+
+## License
+
+This project is open source and available under the [MIT license](LICENSE).

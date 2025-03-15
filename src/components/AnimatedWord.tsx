@@ -10,6 +10,7 @@ interface AnimatedWordProps {
   suffix: string;
   originalWord: string;
   translatedWord: string;
+  onAnimationComplete?: (originalWord: string) => void;
 }
 
 const AnimatedWord = ({
@@ -18,6 +19,7 @@ const AnimatedWord = ({
   suffix,
   originalWord,
   translatedWord,
+  onAnimationComplete,
 }: AnimatedWordProps) => {
   leadingConsonants = leadingConsonants.toLowerCase();
   trailingEnd = trailingEnd.toLowerCase();
@@ -132,7 +134,9 @@ const AnimatedWord = ({
         { duration: 0.75 }
       ),
     ]);
-  }, [leadingBounds, trailingBounds, animate, suffixBounds]);
+
+    onAnimationComplete?.(originalWord);
+  }, [leadingBounds, trailingBounds, animate, suffixBounds, onAnimationComplete]);
 
   useEffect(() => {
     if (!hasRunAnimation) doAnimations();

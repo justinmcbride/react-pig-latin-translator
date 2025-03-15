@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 import { useTimer } from "react-timer-hook";
 
@@ -7,14 +7,26 @@ import randomWords from "random-words";
 import translator from "@/lib/translator";
 import SingleWordInput from "@/components/SingleWordInput";
 
-const GameMode = ({ increasePigSpinSpeed }) => {
+interface GameModeProps {
+  increasePigSpinSpeed: () => void;
+}
+
+type GameWord = {
+  englishWord: string;
+  pigLatinWord: string;
+};
+
+const GameMode = ({ increasePigSpinSpeed }: GameModeProps) => {
   const [isGameModeActivated, setIsGameModeActivated] = useState(true);
 
-  const [gameWord, setGameWord] = useState(``);
+  const [gameWord, setGameWord] = useState<GameWord>({
+    englishWord: "",
+    pigLatinWord: "",
+  });
   const [gameScore, setGameScore] = useState(0);
 
   useEffect(() => {
-    const randomWord = randomWords();
+    const randomWord = randomWords(1)[0];
 
     setGameWord({
       englishWord: randomWord,
@@ -27,18 +39,21 @@ const GameMode = ({ increasePigSpinSpeed }) => {
     setIsGameModeActivated(false);
   };
 
-  const expiryTimestamp = new Date();
-  expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 45);
+  const expiryTimestamp = useMemo(() => {
+    const expiryTimestamp = new Date();
+    expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 45);
+    return expiryTimestamp;
+  }, []);
 
   const { seconds: secondsRemaining } = useTimer({
     expiryTimestamp,
     onExpire: handleTimerExpired,
   });
 
-  const handleSubmitWord = (inputWord) => {
+  const handleSubmitWord = (inputWord: string) => {
     if (inputWord === gameWord.pigLatinWord) {
       console.log(`Correct!`);
-      setGameScore(gameScore + 1);
+      setGameScore((prevScore) => prevScore + 1);
       increasePigSpinSpeed();
     } else {
       console.log(`Incorrect!`);
@@ -46,7 +61,7 @@ const GameMode = ({ increasePigSpinSpeed }) => {
   };
 
   return (
-    <div className="gameModeContainer">
+    <div className="flex flex-col gap-4">
       <div className="flex flex-row">
         <span className="text-white text-2xl">Score: {gameScore}</span>
         <span className="flex grow" />

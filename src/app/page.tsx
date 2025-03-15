@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
-import NormalTranslator from "@/tabs/NormalTranslator";
+import {NormalTranslator} from "@/tabs/NormalTranslator";
 import GameMode from "@/tabs/GameMode";
 
 import "react-tabs/style/react-tabs.css";

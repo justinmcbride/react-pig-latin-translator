@@ -41,10 +41,14 @@ const SingleWordInput = ({
       type="text"
       onChange={handleChange}
       disabled={isDisabled}
-      placeholder={isDisabled ? "... but got cooked." : "This little piggy went to market..."}
+      placeholder={
+        isDisabled
+          ? "... but got cooked."
+          : "This little piggy went to market..."
+      }
       className="bg-white text-black w-full rounded p-5 text-center box-border disabled:opacity-50"
     />
   );
 };
 
-export default SingleWordInput;
+export { SingleWordInput };

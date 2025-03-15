@@ -3,8 +3,8 @@
 import { useCallback, useState } from "react";
 
 import translator from "@/lib/translator";
-import type {TranslationResult} from "@/lib/translator";
-import SingleWordInput from "@/components/SingleWordInput";
+import type { TranslationResult } from "@/lib/translator";
+import { SingleWordInput } from "@/components/SingleWordInput";
 import { AnimatedWord } from "@/components/AnimatedWord";
 
 const NormalTranslator = () => {
@@ -36,16 +36,21 @@ const NormalTranslator = () => {
     );
   }, []);
 
-  const handleAnimationComplete = useCallback((originalWord: string) => {
-    console.log(`handleAnimationComplete: originalWord=[${originalWord}] currentWord=[${animatingWord?.originalWord}]`);
-    setAnimatingWord((prev) => {
-      if (prev.length === 0) {
-        return [];
-      }
+  const handleAnimationComplete = useCallback(
+    (originalWord: string) => {
+      console.log(
+        `handleAnimationComplete: originalWord=[${originalWord}] currentWord=[${animatingWord[0].originalWord}]`
+      );
+      setAnimatingWord((prev) => {
+        if (prev.length === 0) {
+          return [];
+        }
 
-      return prev.slice(1);
-    });
-  }, [animatingWord]);
+        return prev.slice(1);
+      });
+    },
+    [animatingWord]
+  );
 
   return (
     <div>

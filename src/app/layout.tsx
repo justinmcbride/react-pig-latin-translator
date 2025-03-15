@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { CreditsFooter } from "@/components/CreditsFooter";
 import "@/globals.css";
+import { GitHubLink } from "@/components/GitHubLink";
 
 export const metadata: Metadata = {
   title: "Pig Latin Translator",
@@ -18,6 +19,7 @@ export default function RootLayout({
         {children}
         <div className="flex grow" />
         <CreditsFooter />
+        <GitHubLink />
       </body>
     </html>
   );

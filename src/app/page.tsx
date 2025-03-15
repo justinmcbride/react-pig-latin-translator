@@ -10,20 +10,17 @@ import GameMode from "@/tabs/GameMode";
 import "react-tabs/style/react-tabs.css";
 import SpinningPig from "@/components/SpinningPig";
 
-
 export default function Page() {
   const [pigSpinSpeed, setPigSpinSpeed] = useState(20000);
 
   const increasePigSpinSpeed = () => {
-    setPigSpinSpeed(pigSpinSpeed * .8);
+    setPigSpinSpeed(pigSpinSpeed * 0.8);
   };
 
   return (
-    <div className="w-full text-center flex flex-col justify-center items-center">
+    <div className="w-full flex flex-col justify-center items-center text-center">
       <header className="text-4xl">Translate English to Pig Latin</header>
-      <div className="p-[5%]">
-        <SpinningPig pigSpinSpeed={pigSpinSpeed}/>
-      </div>
+      <SpinningPig pigSpinSpeed={pigSpinSpeed} />
       {/* <button onClick={increasePigSpinSpeed}>Increase Pig Spin Speed</button> */}
       <div className="min-w-[60%]">
         <Tabs className="text-md">

@@ -7,7 +7,7 @@ const SpinningPig = ({ pigSpinSpeed }) => {
   });
   return (
     <motion.img
-      className="max-w-80 h-auto"
+      className="max-w-80 h-auto p-[5%]"
       src="/LargePig.png"
       alt="This piggy went to market"
       style={{ rotate }}

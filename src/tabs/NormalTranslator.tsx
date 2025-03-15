@@ -19,29 +19,31 @@ const NormalTranslator = () => {
     }
 
     const translationResult = translator(inputWord);
-    const {
-      leadingConsonants,
-      trailingEnd,
-      suffix,
-      translatedWord,
-    } = translationResult;
+    const { translatedWord } = translationResult;
 
     // Because this can be called into a loop, and we want to ensure that ALL
     // updates to the state aren't batched into a single call, use the state
     // updater syntax. https://stackoverflow.com/a/66560573/4493426
     setPigLatinOutput((previousState) => `${previousState} ${translatedWord}`);
-    setAnimatingWord({...translationResult, originalWord: inputWord});
+    setAnimatingWord((previousState) => ({ ...translationResult, originalWord: inputWord }));
 
     console.log(
-      `handleSubmitWord: inputWord=[${inputWord}] translatedWord=[${translatedWord}]`
+      `handleSubmitWord: inputWord=[${inputWord}] translatedWord=[${translatedWord}]`,
+      translationResult
     );
   };
+
 
   return (
     <div>
       <SingleWordInput onSubmitWord={handleSubmitWord} />
       <div className="text-white font-lg">{pigLatinOutput}</div>
-      {animatingWord && <AnimatedWord key={animatingWord.originalWord} {...animatingWord} />}
+      {animatingWord && (
+        <AnimatedWord
+          key={`${animatingWord?.originalWord}-${pigLatinOutput.length}`}
+          {...animatingWord}
+        />
+      )}
     </div>
   );
 };

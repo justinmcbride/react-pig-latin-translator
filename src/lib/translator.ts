@@ -1,19 +1,27 @@
 const VOWELS = [`a`, `e`, `i`, `o`, `u`, `y`];
 
-const isVowel = (letter) => {
-  return VOWELS.some(actualVowel => actualVowel === letter.toLowerCase());
+const isVowel = (letter: string) => {
+  return VOWELS.some((actualVowel) => actualVowel === letter.toLowerCase());
 };
 
-const isUpperCase = (letter) => {
+const isUpperCase = (letter: string) => {
   return letter === letter.toUpperCase();
 };
 
-const isLowerCase = (letter) => {
+const isLowerCase = (letter: string) => {
   return letter === letter.toLowerCase();
 };
 
-const englishToPigLatin = (originalWord) => {
-  // assumptions: 
+export type TranslationResult = {
+  leadingConsonants: string;
+  trailingEnd: string;
+  suffix: string;
+  translatedWord: string;
+  originalWord: string;
+};
+
+const englishToPigLatin = (originalWord: string): TranslationResult => {
+  // assumptions:
   // - input is a string
   // - input is a single word
   // - input is trimmed of whitespace
@@ -30,8 +38,7 @@ const englishToPigLatin = (originalWord) => {
     leadingConsonants = ``;
     trailingEnd = originalWord;
     suffix = `yay`;
-  }
-  else {
+  } else {
     let hasAnyVowels = false;
     // iterate over all the letters, but skip the first, because we checked it already above.
     // we're looking for the first vowel, and then we'll move the consonants (which appear before the vowel) to the end of the word.
@@ -70,9 +77,12 @@ const englishToPigLatin = (originalWord) => {
   else {
     const isFirstLetterCapital = isUpperCase(originalWord[0]);
     const remainderOfWord = originalWord.substr(1);
-    const remainderLowerCase = (remainderOfWord.length > 0 && isLowerCase(remainderOfWord));
+    const remainderLowerCase =
+      remainderOfWord.length > 0 && isLowerCase(remainderOfWord);
     if (isFirstLetterCapital && remainderLowerCase) {
-      translatedWord = translatedWord[0].toUpperCase() + translatedWord.substring(1).toLowerCase();
+      translatedWord =
+        translatedWord[0].toUpperCase() +
+        translatedWord.substring(1).toLowerCase();
     }
   }
 
@@ -81,7 +91,8 @@ const englishToPigLatin = (originalWord) => {
     trailingEnd,
     suffix,
     translatedWord,
-  }
-}
+    originalWord,
+  };
+};
 
 export default englishToPigLatin;

@@ -4,13 +4,21 @@ import { useEffect, useCallback, useState } from "react";
 import { motion, useAnimate } from "motion/react";
 import useMeasure from "react-use-measure";
 
+interface AnimatedWordProps {
+  leadingConsonants: string;
+  trailingEnd: string;
+  suffix: string;
+  originalWord: string;
+  translatedWord: string;
+}
+
 const AnimatedWord = ({
   leadingConsonants,
   trailingEnd,
   suffix,
   originalWord,
   translatedWord,
-}) => {
+}: AnimatedWordProps) => {
   leadingConsonants = leadingConsonants.toLowerCase();
   trailingEnd = trailingEnd.toLowerCase();
   suffix = suffix.toLowerCase();
@@ -26,7 +34,11 @@ const AnimatedWord = ({
   const [scope, animate] = useAnimate();
 
   const doAnimations = useCallback(async () => {
-    if (leadingBounds.width === 0 && trailingBounds.width === 0 && suffixBounds.width === 0) {
+    if (
+      leadingBounds.width === 0 &&
+      trailingBounds.width === 0 &&
+      suffixBounds.width === 0
+    ) {
       return;
     }
     setHasRunAnimation(true);
@@ -50,11 +62,10 @@ const AnimatedWord = ({
       ),
     ]);
 
-
     const yDistance = leadingBounds.height / 2;
 
     // in parallel: make both leadingConsonants and trailingEnd visible
-    const visibilityDuration = .2;
+    const visibilityDuration = 0.2;
     await Promise.all([
       animate(
         "#leading",
@@ -100,15 +111,15 @@ const AnimatedWord = ({
         {
           x: trailingBounds.width,
         },
-        { duration: .2 }
+        { duration: 0.2 }
       ),
       animate(
         "#trailing",
         {
           x: -leadingBounds.width,
         },
-        { duration: .2 }
-      )
+        { duration: 0.2 }
+      ),
     ]);
 
     await Promise.all([
@@ -118,10 +129,10 @@ const AnimatedWord = ({
           opacity: 1,
           x: 0,
         },
-        { duration: .75 }
+        { duration: 0.75 }
       ),
     ]);
-  }, [leadingBounds, trailingBounds, animate]);
+  }, [leadingBounds, trailingBounds, animate, suffixBounds]);
 
   useEffect(() => {
     if (!hasRunAnimation) doAnimations();
@@ -144,7 +155,7 @@ const AnimatedWord = ({
           id="trailing"
           ref={trailingRef}
           className={partialsSizeClass}
-          initial={{ opacity: 0}}
+          initial={{ opacity: 0 }}
         >
           {trailingEnd}
         </motion.span>

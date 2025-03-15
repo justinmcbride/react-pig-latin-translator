@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 /*
 Even though this component is called "SingleWordInput", multiple words can actually be entered.
@@ -6,17 +6,24 @@ The concept is that only one word at a time is allowed, and that's determined by
 However, users can paste text that has multiple words. So we handle both cases in this component.
 */
 
-const SingleWordInput = ({isDisabled, onSubmitWord}) => {
+interface SingleWordInputProps {
+  isDisabled: boolean;
+  onSubmitWord: (word: string) => void;
+}
+
+const SingleWordInput = ({
+  isDisabled,
+  onSubmitWord,
+}: SingleWordInputProps) => {
   const [englishInput, setEnglishInput] = useState(``);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const allInputText = e.target.value;
 
-    const splitInputText = allInputText.split(' ');
+    const splitInputText = allInputText.split(" ");
     if (splitInputText.length === 1) {
       setEnglishInput(splitInputText[0]);
-    }
-    else {
+    } else {
       for (const currentInputText of splitInputText) {
         if (currentInputText.length === 0) {
           continue;
@@ -26,7 +33,7 @@ const SingleWordInput = ({isDisabled, onSubmitWord}) => {
         onSubmitWord(currentInputText);
       }
     }
-  }
+  };
 
   return (
     <input

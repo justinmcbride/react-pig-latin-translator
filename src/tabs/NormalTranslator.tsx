@@ -3,14 +3,15 @@
 import { useState } from "react";
 
 import translator from "@/lib/translator";
+import type {TranslationResult} from "@/lib/translator";
 import SingleWordInput from "@/components/SingleWordInput";
 import { AnimatedWord } from "@/components/AnimatedWord";
 
 const NormalTranslator = () => {
   const [pigLatinOutput, setPigLatinOutput] = useState(``);
-  const [animatingWord, setAnimatingWord] = useState(null);
+  const [animatingWord, setAnimatingWord] = useState<TranslationResult | null>(null);
 
-  const handleSubmitWord = (inputWord) => {
+  const handleSubmitWord = (inputWord: string) => {
     console.log(`handleSubmitWord: inputWord=[${inputWord}]`);
 
     inputWord = inputWord.trim();
@@ -21,11 +22,11 @@ const NormalTranslator = () => {
     const translationResult = translator(inputWord);
     const { translatedWord } = translationResult;
 
-    // Because this can be called into a loop, and we want to ensure that ALL
+    // Because this can be called within a loop, and we want to ensure that ALL
     // updates to the state aren't batched into a single call, use the state
     // updater syntax. https://stackoverflow.com/a/66560573/4493426
     setPigLatinOutput((previousState) => `${previousState} ${translatedWord}`);
-    setAnimatingWord((previousState) => ({ ...translationResult, originalWord: inputWord }));
+    setAnimatingWord(() => ({ ...translationResult, originalWord: inputWord }));
 
     console.log(
       `handleSubmitWord: inputWord=[${inputWord}] translatedWord=[${translatedWord}]`,
@@ -36,7 +37,7 @@ const NormalTranslator = () => {
 
   return (
     <div>
-      <SingleWordInput onSubmitWord={handleSubmitWord} />
+      <SingleWordInput isDisabled={false} onSubmitWord={handleSubmitWord} />
       <div className="text-white font-lg">{pigLatinOutput}</div>
       {animatingWord && (
         <AnimatedWord

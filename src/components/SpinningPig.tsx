@@ -1,6 +1,10 @@
 import { motion, useTime, useTransform } from "motion/react";
 
-const SpinningPig = ({ pigSpinSpeed }) => {
+interface SpinningPigProps {
+  pigSpinSpeed: number;
+}
+
+const SpinningPig = ({ pigSpinSpeed }: SpinningPigProps) => {
   const time = useTime();
   const rotate = useTransform(time, [0, pigSpinSpeed], [0, 360], {
     clamp: false,

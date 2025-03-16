@@ -10,6 +10,7 @@ import { GameMode } from "@/tabs/GameMode";
 import "react-tabs/style/react-tabs.css";
 import { SpinningPig } from "@/components/SpinningPig";
 import { HowTo } from "@/tabs/HowTo";
+import { StepThroughWord } from "@/components/StepThroughWord";
 
 export default function Page() {
   const [pigSpinSpeed, setPigSpinSpeed] = useState(20000);
@@ -42,6 +43,9 @@ export default function Page() {
           </TabPanel>
         </Tabs>
       </div>
+      <StepThroughWord leadingConsonants={"h"} trailingEnd={"ello"} suffix={"ay"} originalWord={"hello"} translatedWord={"ellohay"} />
+      <StepThroughWord leadingConsonants={"xxxx"} trailingEnd={"uuuu"} suffix={"ay"} originalWord={""} translatedWord={""} />
+      <StepThroughWord leadingConsonants={""} trailingEnd={"uuuu"} suffix={"yay"} originalWord={""} translatedWord={""} />
     </div>
   );
 }

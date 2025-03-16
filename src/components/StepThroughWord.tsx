@@ -21,96 +21,134 @@ const StepThroughWord = ({
 }: StepThroughWordProps) => {
   leadingConsonants = leadingConsonants.toLowerCase();
   trailingEnd = trailingEnd.toLowerCase();
+
+  const firstVowel = trailingEnd[0];
+  trailingEnd = trailingEnd.slice(1);
+
   suffix = suffix.toLowerCase();
   originalWord = originalWord.toLowerCase();
   translatedWord = translatedWord.toLowerCase();
 
   const [leadingRef, leadingBounds] = useMeasure();
+  const [vowelRef, vowelBounds] = useMeasure();
   const [trailingRef, trailingBounds] = useMeasure();
   const [suffixRef, suffixBounds] = useMeasure();
   const [scope, animate] = useAnimate();
 
   const [isDone, setIsDone] = useState(false);
 
-  const doAnimations = useCallback(async function* () {
-    const yDistance = leadingBounds.height / 2;
+  const doAnimations = useCallback(
+    async function* () {
+      const yDistance = leadingBounds.height;
 
-    // in parallel: make both leadingConsonants and trailingEnd visible
-    const visibilityDuration = 0.2;
-    yield await Promise.all([
-      animate(
+      const widthLeading = leadingBounds.width;
+      const widthVowel = vowelBounds.width;
+      const widthTrailing = trailingBounds.width;
+      const widthBackHalf = widthVowel + widthTrailing;
+      const widthSuffix = suffixBounds.width;
+
+      const highlightVowel = async () => {
+        await animate("#vowel", { scale: 1.5 });
+        await animate("#vowel", { scale: 1 });
+      };
+      yield await highlightVowel();
+
+      //move the leadingConsonants down
+      yield await animate(
         "#leading",
         {
-          opacity: 1,
+          y: yDistance,
         },
-        { duration: visibilityDuration }
-      ),
-      animate(
-        "#trailing",
-        {
-          opacity: 1,
-        },
-        { duration: visibilityDuration }
-      ),
-    ]);
+        { duration: 0.5 }
+      );
 
-    // in parallel: move leadingConsonants and trailingEnd to their new word positions
-
-    yield await Promise.all([
-      animate(
+      // move the vowel and trailingEnd left
+      yield await Promise.all([
+        animate(
+          "#vowel",
+          {
+            x: -widthLeading,
+          },
+          { duration: 0.5 }
+        ),
+        animate(
+          "#trailing",
+          {
+            x: -widthLeading,
+          },
+          { duration: 0.5 }
+        ),
+// move the leadingConsonants to the right
+        animate(
+          "#leading",
+          {
+            x: widthBackHalf,
+          },
+          { duration: 0.5 }
+        )
+      ]);
+      
+      // move the leadingConsonants up
+      yield await animate(
         "#leading",
         {
-          x: trailingBounds.width + suffixBounds.width,
-          y: [0, yDistance, 0],
+          y: 0,
         },
-        { duration: 1 }
-      ),
-      animate(
-        "#trailing",
-        {
-          x: -leadingBounds.width + suffixBounds.width,
-          y: [0, -yDistance, 0],
-        },
-        { duration: 1 }
-      ),
-    ]);
+        { duration: 0.5 }
+      );
 
-    // shift both leadingConsonants and trailingEnd to their final positions
-    yield await Promise.all([
-      animate(
-        "#leading",
-        {
-          x: trailingBounds.width,
-        },
-        { duration: 0.2 }
-      ),
-      animate(
-        "#trailing",
-        {
-          x: -leadingBounds.width,
-        },
-        { duration: 0.2 }
-      ),
-    ]);
-    
+      // move the vowel, trailing, and leading to the left
+      yield await Promise.all([
+        animate(
+          "#vowel",
+          {
+            x: -widthSuffix - widthLeading,
+          },
+          { duration: 0.5 }
+        ),
+        animate(
+          "#trailing",
+          {
+            x: -widthSuffix - widthLeading,
+          },
+          { duration: 0.5 }
+        ),
+        animate(
+          "#leading",
+          {
+            x: -widthSuffix + widthBackHalf,
+          },
+          { duration: 0.5 }
+        ),
+      ]);
 
-    yield await Promise.all([
-      animate(
-        "#suffix",
-        {
-          opacity: 1,
-          x: 0,
-        },
-        { duration: 0.75 }
-      ),
-    ]);
 
-    setIsDone(true);
-  }, [animate, suffixBounds, leadingBounds, trailingBounds]);
+      // show the suffix
+      await Promise.all([
+        animate(
+          "#suffix",
+          {
+            x: widthLeading,
+          },
+          { duration: 0 }
+        ),
+        animate(
+          "#suffix",
+          {
+            opacity: 1,
+          },
+          { duration: 0.75 }
+        ),
+      ]);
+
+      setIsDone(true);
+    },
+    [animate, suffixBounds, leadingBounds, trailingBounds, vowelBounds]
+  );
 
   const iterator = useMemo(() => doAnimations(), [doAnimations]);
 
-  const handleNext = useCallback(async() => {
+  const handleNext = useCallback(async () => {
     if (isDone) {
       return;
     }
@@ -125,31 +163,36 @@ const StepThroughWord = ({
       >
         {isDone ? "Reset" : "Next"}
       </button>
-      <div ref={scope}>
+      <div ref={scope} className="relative">
         <div className="flex flex-row pointer-events-none select-none justify-center gap-0">
           <motion.span
             id="leading"
             ref={leadingRef}
-            className={"text-4xl"}
-            initial={{
-              x: suffixBounds.width,
-            }}
+            className="text-4xl"
           >
             {leadingConsonants}
           </motion.span>
+
+          <motion.span
+            id="vowel"
+            ref={vowelRef}
+            className="text-4xl"
+          >
+            {firstVowel}
+          </motion.span>
+
           <motion.span
             id="trailing"
             ref={trailingRef}
-            className={"text-4xl"}
-            initial={{x: suffixBounds.width,}}
+            className="text-4xl"
           >
             {trailingEnd}
           </motion.span>
           <motion.span
             id="suffix"
             ref={suffixRef}
-            className={"text-4xl"}
-            initial={{opacity: 0}}
+            className="text-4xl absolute"
+            initial={{ opacity: 0 }}
           >
             {suffix}
           </motion.span>

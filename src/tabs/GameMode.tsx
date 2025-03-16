@@ -94,4 +94,4 @@ const GameMode = ({ increasePigSpinSpeed }: GameModeProps) => {
   );
 };
 
-export default GameMode;
+export { GameMode };

@@ -10,7 +10,6 @@ interface StepThroughWordProps {
   suffix: string;
   originalWord: string;
   translatedWord: string;
-  onAnimationComplete?: (originalWord: string) => void;
 }
 
 const StepThroughWord = ({
@@ -19,7 +18,6 @@ const StepThroughWord = ({
   suffix,
   originalWord,
   translatedWord,
-  onAnimationComplete,
 }: StepThroughWordProps) => {
   leadingConsonants = leadingConsonants.toLowerCase();
   trailingEnd = trailingEnd.toLowerCase();
@@ -32,26 +30,9 @@ const StepThroughWord = ({
   const [suffixRef, suffixBounds] = useMeasure();
   const [scope, animate] = useAnimate();
 
-  const doAnimations = useCallback(async function* () {
-    // instantly shift the leadingConsonants and trailingEnd to their starting positions,
-    // which is offset to the right by the suffix's width
-    await Promise.all([
-      animate(
-        "#leading",
-        {
-          x: suffixBounds.width,
-        },
-        { duration: 0 }
-      ),
-      animate(
-        "#trailing",
-        {
-          x: suffixBounds.width,
-        },
-        { duration: 0 }
-      ),
-    ]);
+  const [isDone, setIsDone] = useState(false);
 
+  const doAnimations = useCallback(async function* () {
     const yDistance = leadingBounds.height / 2;
 
     // in parallel: make both leadingConsonants and trailingEnd visible
@@ -124,15 +105,17 @@ const StepThroughWord = ({
       ),
     ]);
 
-    onAnimationComplete?.(originalWord);
-  }, [animate, suffixBounds, leadingBounds, trailingBounds, onAnimationComplete, originalWord]);
+    setIsDone(true);
+  }, [animate, suffixBounds, leadingBounds, trailingBounds]);
 
   const iterator = useMemo(() => doAnimations(), [doAnimations]);
 
   const handleNext = useCallback(async() => {
-    console.log(`handleNext`);
+    if (isDone) {
+      return;
+    }
     iterator.next();
-  }, [iterator]);
+  }, [iterator, isDone]);
 
   return (
     <div>
@@ -140,7 +123,7 @@ const StepThroughWord = ({
         onClick={handleNext}
         className="rounded p-2 bg-blue-500 text-white"
       >
-        Next
+        {isDone ? "Reset" : "Next"}
       </button>
       <div ref={scope}>
         <div className="flex flex-row pointer-events-none select-none justify-center gap-0">
@@ -148,7 +131,9 @@ const StepThroughWord = ({
             id="leading"
             ref={leadingRef}
             className={"text-4xl"}
-            initial={{}}
+            initial={{
+              x: suffixBounds.width,
+            }}
           >
             {leadingConsonants}
           </motion.span>
@@ -156,7 +141,7 @@ const StepThroughWord = ({
             id="trailing"
             ref={trailingRef}
             className={"text-4xl"}
-            initial={{}}
+            initial={{x: suffixBounds.width,}}
           >
             {trailingEnd}
           </motion.span>

@@ -1,11 +1,5 @@
 "use client";
 
-import { useCallback, useState } from "react";
-
-import translator from "@/lib/translator";
-import type { TranslationResult } from "@/lib/translator";
-import { SingleWordInput } from "@/components/SingleWordInput";
-import { AnimatedWord } from "@/components/AnimatedWord";
 import { StepThroughWord } from "@/components/StepThroughWord";
 
 const HowTo = () => {

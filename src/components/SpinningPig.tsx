@@ -20,4 +20,4 @@ const SpinningPig = ({ pigSpinSpeed }: SpinningPigProps) => {
   );
 };
 
-export default SpinningPig;
+export { SpinningPig };

@@ -35,157 +35,173 @@ const StepThroughWord = ({
   const [suffixRef, suffixBounds] = useMeasure();
   const [scope, animate] = useAnimate();
 
-  const [isDone, setIsDone] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
 
-  const doAnimations = useCallback(
-    async function* () {
-      const yDistance = leadingBounds.height;
-
-      const widthLeading = leadingBounds.width;
-      const widthVowel = vowelBounds.width;
-      const widthTrailing = trailingBounds.width;
-      const widthBackHalf = widthVowel + widthTrailing;
-      const widthSuffix = suffixBounds.width;
-
-      const highlightVowel = async () => {
-        await animate("#vowel", { scale: 1.5 });
-        await animate("#vowel", { scale: 1 });
-      };
-      yield await highlightVowel();
-
-      //move the leadingConsonants down
-      yield await animate(
-        "#leading",
-        {
-          y: yDistance,
+  const steps = useMemo(
+    () => [
+      {
+        name: "highlightVowel",
+        duration: 0.5,
+        action: async () => {
+          await animate("#vowel", { scale: 1.5 });
+          await animate("#vowel", { scale: 1 });
         },
-        { duration: 0.5 }
-      );
-
-      // move the vowel and trailingEnd left
-      yield await Promise.all([
-        animate(
-          "#vowel",
-          {
-            x: -widthLeading,
-          },
-          { duration: 0.5 }
-        ),
-        animate(
-          "#trailing",
-          {
-            x: -widthLeading,
-          },
-          { duration: 0.5 }
-        ),
-// move the leadingConsonants to the right
-        animate(
-          "#leading",
-          {
-            x: widthBackHalf,
-          },
-          { duration: 0.5 }
-        )
-      ]);
-      
-      // move the leadingConsonants up
-      yield await animate(
-        "#leading",
-        {
-          y: 0,
+      },
+      {
+        name: "moveLeadingDown",
+        duration: 0.5,
+        action: async () => {
+          await animate(
+            "#leading",
+            {
+              y: leadingBounds.height,
+            },
+            { duration: 0.5 }
+          );
         },
-        { duration: 0.5 }
-      );
-
-      // move the vowel, trailing, and leading to the left
-      yield await Promise.all([
-        animate(
-          "#vowel",
-          {
-            x: -widthSuffix - widthLeading,
-          },
-          { duration: 0.5 }
-        ),
-        animate(
-          "#trailing",
-          {
-            x: -widthSuffix - widthLeading,
-          },
-          { duration: 0.5 }
-        ),
-        animate(
-          "#leading",
-          {
-            x: -widthSuffix + widthBackHalf,
-          },
-          { duration: 0.5 }
-        ),
-      ]);
-
-
-      // show the suffix
-      await Promise.all([
-        animate(
-          "#suffix",
-          {
-            x: widthLeading,
-          },
-          { duration: 0 }
-        ),
-        animate(
-          "#suffix",
-          {
-            opacity: 1,
-          },
-          { duration: 0.75 }
-        ),
-      ]);
-
-      setIsDone(true);
-    },
-    [animate, suffixBounds, leadingBounds, trailingBounds, vowelBounds]
+      },
+      {
+        name: "moveVowelAndTrailingLeft",
+        duration: 0.5,
+        action: async () => {
+          await Promise.all([
+            animate(
+              "#vowel",
+              {
+                x: -leadingBounds.width,
+              },
+              { duration: 0.5 }
+            ),
+            animate(
+              "#trailing",
+              {
+                x: -leadingBounds.width,
+              },
+              { duration: 0.5 }
+            ),
+            animate(
+              "#leading",
+              {
+                x: vowelBounds.width + trailingBounds.width,
+              },
+              { duration: 0.5 }
+            ),
+          ]);
+        },
+      },
+      {
+        name: "moveLeadingUp",
+        duration: 0.5,
+        action: async () => {
+          await animate(
+            "#leading",
+            {
+              y: 0,
+            },
+            { duration: 0.5 }
+          );
+        },
+      },
+      {
+        name: "moveVowelTrailingLeadingLeft",
+        duration: 0.5,
+        action: async () => {
+          await Promise.all([
+            animate(
+              "#vowel",
+              {
+                x: -suffixBounds.width - leadingBounds.width,
+              },
+              { duration: 0.5 }
+            ),
+            animate(
+              "#trailing",
+              {
+                x: -suffixBounds.width - leadingBounds.width,
+              },
+              { duration: 0.5 }
+            ),
+            animate(
+              "#leading",
+              {
+                x:
+                  -suffixBounds.width +
+                  vowelBounds.width +
+                  trailingBounds.width,
+              },
+              { duration: 0.5 }
+            ),
+          ]);
+        },
+      },
+      {
+        name: "showSuffix",
+        duration: 0.75,
+        action: async () => {
+          await Promise.all([
+            animate(
+              "#suffix",
+              {
+                x: leadingBounds.width,
+              },
+              { duration: 0 }
+            ),
+            animate(
+              "#suffix",
+              {
+                opacity: 1,
+              },
+              { duration: 0.75 }
+            ),
+          ]);
+        },
+      },
+    ],
+    [
+      animate,
+      leadingBounds.height,
+      leadingBounds.width,
+      suffixBounds.width,
+      trailingBounds.width,
+      vowelBounds.width,
+    ]
   );
 
-  const iterator = useMemo(() => doAnimations(), [doAnimations]);
+  const resetAnimations = useCallback(async () => {
+    await animate("#leading", { x: 0, y: 0 }, { duration: 0 });
+    await animate("#vowel", { x: 0 }, { duration: 0 });
+    await animate("#trailing", { x: 0 }, { duration: 0 });
+    await animate("#suffix", { x: 0, opacity: 0 }, { duration: 0 });
+
+    setCurrentStep(0);
+  }, [animate]);
 
   const handleNext = useCallback(async () => {
-    if (isDone) {
-      return;
-    }
-    iterator.next();
-  }, [iterator, isDone]);
+    setIsAnimating(true);
+    await steps[currentStep].action();
+    setCurrentStep((prevStep) => prevStep + 1);
+    setIsAnimating(false);
+  }, [currentStep, steps]);
+
+  const handleReset = useCallback(async() => {
+    await resetAnimations();
+    setCurrentStep(0);
+  }, [resetAnimations]);
 
   return (
-    <div>
-      <button
-        onClick={handleNext}
-        className="rounded p-2 bg-blue-500 text-white"
-      >
-        {isDone ? "Reset" : "Next"}
-      </button>
+    <div className="flex flex-row gap-4 items-center">
       <div ref={scope} className="relative">
         <div className="flex flex-row pointer-events-none select-none justify-center gap-0">
-          <motion.span
-            id="leading"
-            ref={leadingRef}
-            className="text-4xl"
-          >
+          <motion.span id="leading" ref={leadingRef} className="text-4xl">
             {leadingConsonants}
           </motion.span>
 
-          <motion.span
-            id="vowel"
-            ref={vowelRef}
-            className="text-4xl"
-          >
+          <motion.span id="vowel" ref={vowelRef} className="text-4xl">
             {firstVowel}
           </motion.span>
 
-          <motion.span
-            id="trailing"
-            ref={trailingRef}
-            className="text-4xl"
-          >
+          <motion.span id="trailing" ref={trailingRef} className="text-4xl">
             {trailingEnd}
           </motion.span>
           <motion.span
@@ -198,6 +214,25 @@ const StepThroughWord = ({
           </motion.span>
         </div>
       </div>
+      {
+        currentStep === steps.length ? (
+          <button
+            onClick={handleReset}
+            disabled={isAnimating}
+            className="rounded p-2 bg-blue-500 text-white"
+          >
+            Reset
+          </button>
+        ) : (
+          <button
+            onClick={handleNext}
+            disabled={isAnimating}
+            className="rounded p-2 bg-blue-500 text-white disabled:bg-blue-200"
+          >
+            {`➡️ [${currentStep}/${steps.length}]`}
+          </button>
+        )
+      }
     </div>
   );
 };

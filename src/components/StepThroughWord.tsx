@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useCallback, useState, useMemo } from "react";
 import { motion, useAnimate } from "motion/react";
+import { useCallback, useMemo, useState } from "react";
 import useMeasure from "react-use-measure";
 
 interface StepThroughWordProps {
@@ -38,135 +38,123 @@ const StepThroughWord = ({
   const [currentStep, setCurrentStep] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  const steps = useMemo(
-    () => [
-      {
-        name: "highlightVowel",
-        duration: 0.5,
-        action: async () => {
-          await animate("#vowel", { scale: 1.5 });
-          await animate("#vowel", { scale: 1 });
-        },
-      },
-      {
-        name: "moveLeadingDown",
-        duration: 0.5,
-        action: async () => {
-          await animate(
-            "#leading",
+  const steps = useMemo(() => {
+    const isFullAnimation = leadingConsonants.length > 0;
+    const steps: (() => Promise<void>)[] = [];
+
+    // highlight the vowel
+    steps.push(async () => {
+      await animate("#vowel", { scale: 1.5 });
+      await animate("#vowel", { scale: 1 });
+    });
+
+    if (isFullAnimation) {
+      // move the leading consonants down
+      steps.push(async () => {
+        await animate(
+          "#leading",
+          {
+            y: leadingBounds.height,
+          },
+          { duration: 0.5 }
+        );
+      });
+
+      // swap the halves around
+      steps.push(async () => {
+        await Promise.all([
+          animate(
+            "#vowel",
             {
-              y: leadingBounds.height,
+              x: -leadingBounds.width,
             },
             { duration: 0.5 }
-          );
-        },
-      },
-      {
-        name: "moveVowelAndTrailingLeft",
-        duration: 0.5,
-        action: async () => {
-          await Promise.all([
-            animate(
-              "#vowel",
-              {
-                x: -leadingBounds.width,
-              },
-              { duration: 0.5 }
-            ),
-            animate(
-              "#trailing",
-              {
-                x: -leadingBounds.width,
-              },
-              { duration: 0.5 }
-            ),
-            animate(
-              "#leading",
-              {
-                x: vowelBounds.width + trailingBounds.width,
-              },
-              { duration: 0.5 }
-            ),
-          ]);
-        },
-      },
-      {
-        name: "moveLeadingUp",
-        duration: 0.5,
-        action: async () => {
-          await animate(
-            "#leading",
+          ),
+          animate(
+            "#trailing",
             {
-              y: 0,
+              x: -leadingBounds.width,
             },
             { duration: 0.5 }
-          );
-        },
-      },
-      {
-        name: "moveVowelTrailingLeadingLeft",
-        duration: 0.5,
-        action: async () => {
-          await Promise.all([
-            animate(
-              "#vowel",
-              {
-                x: -suffixBounds.width - leadingBounds.width,
-              },
-              { duration: 0.5 }
-            ),
-            animate(
-              "#trailing",
-              {
-                x: -suffixBounds.width - leadingBounds.width,
-              },
-              { duration: 0.5 }
-            ),
-            animate(
-              "#leading",
-              {
-                x:
-                  -suffixBounds.width +
-                  vowelBounds.width +
-                  trailingBounds.width,
-              },
-              { duration: 0.5 }
-            ),
-          ]);
-        },
-      },
-      {
-        name: "showSuffix",
-        duration: 0.75,
-        action: async () => {
-          await Promise.all([
-            animate(
-              "#suffix",
-              {
-                x: leadingBounds.width,
-              },
-              { duration: 0 }
-            ),
-            animate(
-              "#suffix",
-              {
-                opacity: 1,
-              },
-              { duration: 0.75 }
-            ),
-          ]);
-        },
-      },
-    ],
-    [
-      animate,
-      leadingBounds.height,
-      leadingBounds.width,
-      suffixBounds.width,
-      trailingBounds.width,
-      vowelBounds.width,
-    ]
-  );
+          ),
+          animate(
+            "#leading",
+            {
+              x: vowelBounds.width + trailingBounds.width,
+            },
+            { duration: 0.5 }
+          ),
+        ]);
+      });
+
+      // move the leading consonants back up
+      steps.push(async () => {
+        await animate(
+          "#leading",
+          {
+            y: 0,
+          },
+          { duration: 0.5 }
+        );
+      });
+    }
+
+    // // move everything over to make room for the suffix
+    // steps.push(async () => {
+    //   await Promise.all([
+    //     animate(
+    //       "#vowel",
+    //       {
+    //         x: -suffixBounds.width - leadingBounds.width,
+    //       },
+    //       { duration: 0.5 }
+    //     ),
+    //     animate(
+    //       "#trailing",
+    //       {
+    //         x: -suffixBounds.width - leadingBounds.width,
+    //       },
+    //       { duration: 0.5 }
+    //     ),
+    //     animate(
+    //       "#leading",
+    //       {
+    //         x: -suffixBounds.width + vowelBounds.width + trailingBounds.width,
+    //       },
+    //       { duration: 0.5 }
+    //     ),
+    //   ]);
+    // });
+
+    // reveal the new suffix
+    steps.push(async () => {
+      await Promise.all([
+        // animate(
+        //   "#suffix",
+        //   {
+        //     x: leadingBounds.width,
+        //   },
+        //   { duration: 0 }
+        // ),
+        animate(
+          "#suffix",
+          {
+            opacity: 1,
+          },
+          { duration: 0.75 }
+        ),
+      ]);
+    });
+
+    return steps;
+  }, [
+    animate,
+    leadingBounds,
+    suffixBounds,
+    trailingBounds,
+    vowelBounds,
+    leadingConsonants,
+  ]);
 
   const resetAnimations = useCallback(async () => {
     await animate("#leading", { x: 0, y: 0 }, { duration: 0 });
@@ -179,12 +167,12 @@ const StepThroughWord = ({
 
   const handleNext = useCallback(async () => {
     setIsAnimating(true);
-    await steps[currentStep].action();
+    await steps[currentStep]();
     setCurrentStep((prevStep) => prevStep + 1);
     setIsAnimating(false);
   }, [currentStep, steps]);
 
-  const handleReset = useCallback(async() => {
+  const handleReset = useCallback(async () => {
     await resetAnimations();
     setCurrentStep(0);
   }, [resetAnimations]);
@@ -207,32 +195,30 @@ const StepThroughWord = ({
           <motion.span
             id="suffix"
             ref={suffixRef}
-            className="text-4xl absolute"
+            className="text-4xl"
             initial={{ opacity: 0 }}
           >
             {suffix}
           </motion.span>
         </div>
       </div>
-      {
-        currentStep === steps.length ? (
-          <button
-            onClick={handleReset}
-            disabled={isAnimating}
-            className="rounded p-2 bg-blue-500 text-white"
-          >
-            Reset
-          </button>
-        ) : (
-          <button
-            onClick={handleNext}
-            disabled={isAnimating}
-            className="rounded p-2 bg-blue-500 text-white disabled:bg-blue-200"
-          >
-            {`➡️ [${currentStep}/${steps.length}]`}
-          </button>
-        )
-      }
+      {currentStep === steps.length ? (
+        <button
+          onClick={handleReset}
+          disabled={isAnimating}
+          className="rounded p-2 bg-blue-500 text-white"
+        >
+          Reset
+        </button>
+      ) : (
+        <button
+          onClick={handleNext}
+          disabled={isAnimating}
+          className="rounded p-2 bg-blue-500 text-white disabled:bg-blue-200"
+        >
+          {`➡️ [${currentStep}/${steps.length}]`}
+        </button>
+      )}
     </div>
   );
 };

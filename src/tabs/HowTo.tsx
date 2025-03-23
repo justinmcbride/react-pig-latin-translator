@@ -5,21 +5,19 @@ import { StepThroughWord } from "@/components/StepThroughWord";
 const HowTo = () => {
   return (
     <div>
-      <div>Translating from English to Pig Latin is easier than you think!</div>
-      <div>Here are the rules:</div>
-      <div>Find the first vowel in the word.</div>
-      <div>
-        If the first letter is a vowel, simply add &ldquo;yay&rdquo; to the end of the word.
-      </div>
-      <div>
-        Any letters before the first vowel are considered consonants. Move the consonants to the end of the word, and
-        add &ldquo;ay&rdquo; to the end.
-      </div>
-      <div>For example:</div>
-      <div>English: &ldquo;hello&rdquo;</div>
-      <div>Pig Latin: &ldquo;ellohay&rdquo;</div>
-      <StepThroughWord leadingConsonants={"h"} trailingEnd={"ello"} suffix={"ay"} originalWord={"hello"} translatedWord={"ellohay"} />
+      <p className="text-white font-bold text-lg">It is simple! Here are the rules:</p>
 
+      <p><span className="text-white font-bold">1.</span> Find the first vowel in the word.</p>
+      <p>
+      <span className="text-white font-bold">2.</span> If the first letter is a vowel, simply add &ldquo;yay&rdquo; to the end of the word.
+      </p>
+      <p>
+      <span className="text-white font-bold">3.</span> Any letters before the first vowel move to the end of the word, and
+        add &ldquo;ay&rdquo; to the end.
+      </p>
+
+      <StepThroughWord originalWord={"hello"} />
+      <StepThroughWord originalWord={"example"} />
     </div>
   );
 };

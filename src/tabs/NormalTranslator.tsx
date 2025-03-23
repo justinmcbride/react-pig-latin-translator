@@ -55,7 +55,16 @@ const NormalTranslator = () => {
   return (
     <div>
       <SingleWordInput isDisabled={false} onSubmitWord={handleSubmitWord} />
-      <div className="text-white font-lg">{pigLatinOutput}</div>
+      
+      {pigLatinOutput && (
+        <div className="mt-6 p-4 bg-gray-800 rounded-lg shadow-lg border border-gray-700">
+          <h3 className="text-xl font-semibold text-gray-300 mb-2">Pig Latin Translation:</h3>
+          <p className="text-white text-xl font-medium break-words leading-relaxed">
+            {pigLatinOutput.trim()}
+          </p>
+        </div>
+      )}
+      
       {animatingWord.length > 0 && (
         <AnimatedWord
           key={`${animatingWord[0].originalWord}-${pigLatinOutput.length}`}

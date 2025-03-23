@@ -1,24 +1,17 @@
 "use client";
 
+import englishToPigLatin from "@/lib/translator";
 import { motion, useAnimate } from "motion/react";
 import { useCallback, useMemo, useState } from "react";
 import useMeasure from "react-use-measure";
 
 interface StepThroughWordProps {
-  leadingConsonants: string;
-  trailingEnd: string;
-  suffix: string;
   originalWord: string;
-  translatedWord: string;
 }
 
-const StepThroughWord = ({
-  leadingConsonants,
-  trailingEnd,
-  suffix,
-  originalWord,
-  translatedWord,
-}: StepThroughWordProps) => {
+const StepThroughWord = ({ originalWord }: StepThroughWordProps) => {
+  let { leadingConsonants, trailingEnd, suffix, translatedWord } =
+    englishToPigLatin(originalWord);
   leadingConsonants = leadingConsonants.toLowerCase();
   trailingEnd = trailingEnd.toLowerCase();
 
@@ -147,14 +140,7 @@ const StepThroughWord = ({
     });
 
     return steps;
-  }, [
-    animate,
-    leadingBounds,
-    suffixBounds,
-    trailingBounds,
-    vowelBounds,
-    leadingConsonants,
-  ]);
+  }, [animate, leadingBounds, trailingBounds, vowelBounds, leadingConsonants]);
 
   const resetAnimations = useCallback(async () => {
     await animate("#leading", { x: 0, y: 0 }, { duration: 0 });
@@ -180,24 +166,19 @@ const StepThroughWord = ({
   return (
     <div className="flex flex-row gap-4 items-center">
       <div ref={scope} className="relative">
-        <div className="flex flex-row pointer-events-none select-none justify-center gap-0">
-          <motion.span id="leading" ref={leadingRef} className="text-4xl">
+        <div className="flex flex-row pointer-events-none select-none justify-center gap-0 text-9xl">
+          <motion.span id="leading" ref={leadingRef}>
             {leadingConsonants}
           </motion.span>
 
-          <motion.span id="vowel" ref={vowelRef} className="text-4xl">
+          <motion.span id="vowel" ref={vowelRef}>
             {firstVowel}
           </motion.span>
 
-          <motion.span id="trailing" ref={trailingRef} className="text-4xl">
+          <motion.span id="trailing" ref={trailingRef}>
             {trailingEnd}
           </motion.span>
-          <motion.span
-            id="suffix"
-            ref={suffixRef}
-            className="text-4xl"
-            initial={{ opacity: 0 }}
-          >
+          <motion.span id="suffix" ref={suffixRef} initial={{ opacity: 0 }}>
             {suffix}
           </motion.span>
         </div>

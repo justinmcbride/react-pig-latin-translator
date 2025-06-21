@@ -211,6 +211,9 @@ const StepThroughWord = ({ originalWord }: StepThroughWordProps) => {
             <span className="inline-block w-2 h-2 rounded-full bg-yellow-300 mr-1"></span>
             Vowels
             <span className="mx-3">•</span>
+            <span className="inline-block w-2 h-2 rounded-full bg-blue-300 mr-1"></span>
+            Remaining
+            <span className="mx-3">•</span>
             <span className="inline-block w-2 h-2 rounded-full bg-green-300 mr-1"></span>
             Suffix
           </div>

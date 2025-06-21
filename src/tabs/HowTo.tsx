@@ -1,8 +1,20 @@
 "use client";
 
+import { useState } from "react";
 import { StepThroughWord } from "@/components/StepThroughWord";
 
 const HowTo = () => {
+  const exampleWords = [
+    { word: "dragon", description: "Single consonant start - move 'd' to end" },
+    { word: "awesome", description: "Vowel start - just add 'yay'" },
+    { word: "thunder", description: "Consonant cluster - move 'th' to end" },
+    { word: "epic", description: "Vowel start - add 'yay'" },
+    { word: "squirrel", description: "Complex consonants - move 'squ' to end" },
+    { word: "wizard", description: "Single consonant - move 'w' to end" }
+  ];
+  
+  const [selectedWordIndex, setSelectedWordIndex] = useState(0);
+
   return (
     <div className="space-y-8">
       <div className="text-center">
@@ -44,10 +56,35 @@ const HowTo = () => {
         <h3 className="text-white/80 font-semibold text-xl text-center">
           Try these examples:
         </h3>
-        <div className="space-y-8">
-          <StepThroughWord originalWord={"hello"} />
-          <StepThroughWord originalWord={"example"} />
+        
+        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 shadow-lg">
+          <div className="flex flex-wrap gap-2 justify-center mb-4">
+            {exampleWords.map((example, index) => (
+              <button
+                key={example.word}
+                onClick={() => setSelectedWordIndex(index)}
+                className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${
+                  selectedWordIndex === index
+                    ? 'bg-pink-500 text-white shadow-lg'
+                    : 'bg-white/10 text-white/80 hover:bg-white/20'
+                }`}
+              >
+                {example.word}
+              </button>
+            ))}
+          </div>
+          
+          <div className="text-center mb-4">
+            <p className="text-white/70 text-sm italic">
+              {exampleWords[selectedWordIndex].description}
+            </p>
+          </div>
         </div>
+        
+        <StepThroughWord 
+          key={exampleWords[selectedWordIndex].word} 
+          originalWord={exampleWords[selectedWordIndex].word} 
+        />
       </div>
     </div>
   );

@@ -164,42 +164,62 @@ const StepThroughWord = ({ originalWord }: StepThroughWordProps) => {
   }, [resetAnimations]);
 
   return (
-    <div className="flex flex-row gap-4 items-center">
-      <div ref={scope} className="relative">
-        <div className="flex flex-row pointer-events-none select-none justify-center gap-0 text-9xl">
-          <motion.span id="leading" ref={leadingRef}>
-            {leadingConsonants}
-          </motion.span>
+    <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 shadow-xl">
+      <div className="flex flex-col lg:flex-row gap-6 items-center justify-center">
+        <div ref={scope} className="relative">
+          <div className="flex flex-row pointer-events-none select-none justify-center gap-0 text-7xl lg:text-9xl font-bold text-white drop-shadow-2xl">
+            <motion.span id="leading" ref={leadingRef} className="text-pink-300">
+              {leadingConsonants}
+            </motion.span>
 
-          <motion.span id="vowel" ref={vowelRef}>
-            {firstVowel}
-          </motion.span>
+            <motion.span id="vowel" ref={vowelRef} className="text-yellow-300">
+              {firstVowel}
+            </motion.span>
 
-          <motion.span id="trailing" ref={trailingRef}>
-            {trailingEnd}
-          </motion.span>
-          <motion.span id="suffix" ref={suffixRef} initial={{ opacity: 0 }}>
-            {suffix}
-          </motion.span>
+            <motion.span id="trailing" ref={trailingRef} className="text-blue-300">
+              {trailingEnd}
+            </motion.span>
+            <motion.span id="suffix" ref={suffixRef} initial={{ opacity: 0 }} className="text-green-300">
+              {suffix}
+            </motion.span>
+          </div>
+        </div>
+        
+        <div className="flex flex-col items-center gap-3">
+          {currentStep === steps.length ? (
+            <button
+              onClick={handleReset}
+              disabled={isAnimating}
+              className="group relative overflow-hidden rounded-xl px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:transform-none"
+            >
+              <span className="relative z-10">🔄 Reset</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+            </button>
+          ) : (
+            <button
+              onClick={handleNext}
+              disabled={isAnimating}
+              className="group relative overflow-hidden rounded-xl px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:transform-none"
+            >
+              <span className="relative z-10">
+                ➡️ Step {currentStep + 1} of {steps.length}
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+            </button>
+          )}
+          
+          <div className="text-white/60 text-sm text-center">
+            <span className="inline-block w-2 h-2 rounded-full bg-pink-300 mr-1"></span>
+            Consonants
+            <span className="mx-3">•</span>
+            <span className="inline-block w-2 h-2 rounded-full bg-yellow-300 mr-1"></span>
+            Vowels
+            <span className="mx-3">•</span>
+            <span className="inline-block w-2 h-2 rounded-full bg-green-300 mr-1"></span>
+            Suffix
+          </div>
         </div>
       </div>
-      {currentStep === steps.length ? (
-        <button
-          onClick={handleReset}
-          disabled={isAnimating}
-          className="rounded p-2 bg-blue-500 text-white"
-        >
-          Reset
-        </button>
-      ) : (
-        <button
-          onClick={handleNext}
-          disabled={isAnimating}
-          className="rounded p-2 bg-blue-500 text-white disabled:bg-blue-200"
-        >
-          {`➡️ [${currentStep}/${steps.length}]`}
-        </button>
-      )}
     </div>
   );
 };

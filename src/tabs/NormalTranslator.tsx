@@ -39,17 +39,24 @@ const NormalTranslator = () => {
   const handleAnimationComplete = useCallback(
     (originalWord: string) => {
       console.log(
-        `handleAnimationComplete: originalWord=[${originalWord}] currentWord=[${animatingWord[0].originalWord}]`
+        `handleAnimationComplete: originalWord=[${originalWord}]`
       );
       setAnimatingWord((prev) => {
         if (prev.length === 0) {
           return [];
         }
-
+        
+        // Verify that the completed animation matches the first item in queue
+        if (prev[0]?.originalWord === originalWord) {
+          return prev.slice(1);
+        }
+        
+        // If there's a mismatch, log it but still remove the first item
+        console.warn(`Animation completed for ${originalWord} but expected ${prev[0]?.originalWord}`);
         return prev.slice(1);
       });
     },
-    [animatingWord]
+    [] // Remove animatingWord from dependencies to prevent callback recreation
   );
 
   return (

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { CreditsFooter } from "@/components/CreditsFooter";
 import "@/globals.css";
 import { GitHubLink } from "@/components/GitHubLink";
+import { FlyingPigs } from "@/components/FlyingPigs";
 
 export const metadata: Metadata = {
   title: "Pig Latin Translator",
@@ -19,6 +20,7 @@ export default function RootLayout({
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0 bg-gradient-to-r from-pink-500/20 to-purple-500/20"></div>
         </div>
+        <FlyingPigs />
         <div className="relative z-10 w-full flex flex-col items-center min-h-screen">
           {children}
           <div className="flex grow" />

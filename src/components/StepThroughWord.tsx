@@ -165,9 +165,9 @@ const StepThroughWord = ({ originalWord }: StepThroughWordProps) => {
 
   return (
     <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 shadow-xl">
-      <div className="flex flex-col lg:flex-row gap-6 items-center justify-center">
-        <div ref={scope} className="relative">
-          <div className="flex flex-row pointer-events-none select-none justify-center gap-0 text-7xl lg:text-9xl font-bold text-white drop-shadow-2xl">
+      <div className="flex flex-col lg:flex-row gap-6 items-center justify-between">
+        <div ref={scope} className="relative flex-1">
+          <div className="flex flex-row pointer-events-none select-none justify-start gap-0 text-7xl lg:text-9xl font-bold text-white drop-shadow-2xl">
             <motion.span id="leading" ref={leadingRef} className="text-pink-300">
               {leadingConsonants}
             </motion.span>
@@ -185,7 +185,7 @@ const StepThroughWord = ({ originalWord }: StepThroughWordProps) => {
           </div>
         </div>
         
-        <div className="flex flex-col items-center gap-3">
+        <div className="flex flex-col items-center gap-3 flex-shrink-0">
           {currentStep === steps.length ? (
             <button
               onClick={handleReset}

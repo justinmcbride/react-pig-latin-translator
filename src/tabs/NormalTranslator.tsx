@@ -62,25 +62,40 @@ const NormalTranslator = () => {
   );
 
   return (
-    <div>
+    <div className="space-y-6">
       <SingleWordInput isDisabled={false} onSubmitWord={handleSubmitWord} />
       
       {pigLatinOutput && (
-        <div className="mt-6 p-4 bg-gray-800 rounded-lg shadow-lg border border-gray-700">
-          <h3 className="text-xl font-semibold text-gray-300 mb-2">Pig Latin Translation:</h3>
-          <p className="text-white text-xl font-medium break-words leading-relaxed">
+        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 shadow-lg">
+          <h3 className="text-xl font-semibold text-pink-300 mb-4 flex items-center">
+            <span className="inline-block w-3 h-3 rounded-full bg-pink-400 mr-3"></span>
+            Pig Latin Translation:
+          </h3>
+          <p className="text-white text-2xl font-medium break-words leading-relaxed bg-white/5 rounded-lg p-4 border border-white/10">
             {pigLatinOutput.trim()}
           </p>
         </div>
       )}
       
-      {animatingWord.length > 0 && (
-        <AnimatedWord
-          key={`${animatingWord[0].originalWord}-${animationKeyRef.current}`}
-          {...animatingWord[0]}
-          onAnimationComplete={handleAnimationComplete}
-        />
-      )}
+      <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 shadow-lg">
+        <h3 className="text-xl font-semibold text-blue-300 mb-4 flex items-center">
+          <span className="inline-block w-3 h-3 rounded-full bg-blue-400 mr-3"></span>
+          Word Animation:
+        </h3>
+        <div className="min-h-[100px] flex items-center justify-center">
+          {animatingWord.length > 0 ? (
+            <AnimatedWord
+              key={`${animatingWord[0].originalWord}-${animationKeyRef.current}`}
+              {...animatingWord[0]}
+              onAnimationComplete={handleAnimationComplete}
+            />
+          ) : (
+            <p className="text-white/60 text-lg italic">
+              Type a word above to watch it get translated!
+            </p>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

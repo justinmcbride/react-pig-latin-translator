@@ -46,7 +46,7 @@ const SingleWordInput = ({
           ? "... but got cooked."
           : "This little piggy went to market..."
       }
-      className="bg-white text-black w-full rounded p-5 text-center box-border disabled:opacity-50"
+      className="bg-white/10 backdrop-blur-sm text-white placeholder-white/60 w-full rounded-xl p-5 text-center text-2xl border border-white/20 shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
     />
   );
 };

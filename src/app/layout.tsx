@@ -15,11 +15,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="min-h-screen flex flex-col items-center text-[pink] bg-[#282c34]">
-        {children}
-        <div className="flex grow" />
-        <CreditsFooter />
-        <GitHubLink />
+      <body className="min-h-screen flex flex-col items-center text-white bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0 bg-gradient-to-r from-pink-500/20 to-purple-500/20"></div>
+        </div>
+        <div className="relative z-10 w-full flex flex-col items-center min-h-screen">
+          {children}
+          <div className="flex grow" />
+          <CreditsFooter />
+          <GitHubLink />
+        </div>
       </body>
     </html>
   );

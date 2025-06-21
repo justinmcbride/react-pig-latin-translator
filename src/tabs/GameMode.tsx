@@ -69,21 +69,29 @@ const GameMode = ({ increasePigSpinSpeed }: GameModeProps) => {
       wiggleWord();
     }
   }, [gameWord, increasePigSpinSpeed, wiggleWord]);
-
   return (
-    <div className="flex flex-col gap-4" ref={scope}>
-      <div className="flex flex-row" >
-        <span className="text-white text-2xl">Score: {gameScore}</span>
-        <span className="flex grow" />
-        <span className="text-white text-2xl">Time: {secondsRemaining}</span>
-      </div>
-
-      {isGameModeActivated ? (
-        <motion.div className="text-4xl" id="translateTag">
-          Translate: <span className="text-white">{gameWord.englishWord}</span>
+    <div className="flex flex-col gap-6" ref={scope}>
+      <div className="flex flex-row items-center justify-between bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+        <div className="flex items-center space-x-3">
+          <span className="inline-block w-3 h-3 rounded-full bg-green-400"></span>
+          <span className="text-white text-xl font-semibold">Score: <span className="text-green-300">{gameScore}</span></span>
+        </div>
+        <div className="flex items-center space-x-3">
+          <span className="inline-block w-3 h-3 rounded-full bg-blue-400"></span>
+          <span className="text-white text-xl font-semibold">Time: <span className="text-blue-300">{secondsRemaining}s</span></span>
+        </div>
+      </div>      {isGameModeActivated ? (
+        <motion.div className="text-center bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 shadow-lg" id="translateTag">
+          <div className="text-2xl text-white/80 mb-2">Translate this word:</div>
+          <div className="text-4xl font-bold text-pink-300">
+            {gameWord.englishWord}
+          </div>
         </motion.div>
       ) : (
-        <div className="text-4xl">Game Over!</div>
+        <div className="text-center bg-red-500/20 backdrop-blur-sm rounded-xl p-8 border border-red-400/30">
+          <div className="text-4xl font-bold text-red-300 mb-2">Game Over!</div>
+          <div className="text-xl text-white/80">Final Score: <span className="text-green-300 font-semibold">{gameScore}</span></div>
+        </div>
       )}
 
       <SingleWordInput

@@ -190,21 +190,17 @@ const StepThroughWord = ({ originalWord }: StepThroughWordProps) => {
             <button
               onClick={handleReset}
               disabled={isAnimating}
-              className="group relative overflow-hidden rounded-xl px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:transform-none"
+              className="rounded-xl px-6 py-3 bg-purple-500 hover:bg-purple-600 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:transform-none"
             >
-              <span className="relative z-10">🔄 Reset</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+              🔄 Reset
             </button>
           ) : (
             <button
               onClick={handleNext}
               disabled={isAnimating}
-              className="group relative overflow-hidden rounded-xl px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:transform-none"
+              className="rounded-xl px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:transform-none"
             >
-              <span className="relative z-10">
-                ➡️ Step {currentStep + 1} of {steps.length}
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+              ➡️ Step {currentStep + 1} of {steps.length}
             </button>
           )}
           

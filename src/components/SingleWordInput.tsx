@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 
 /*
 Even though this component is called "SingleWordInput", multiple words can actually be entered.
@@ -11,10 +11,10 @@ interface SingleWordInputProps {
   onSubmitWord: (word: string) => void;
 }
 
-const SingleWordInput = ({
+const SingleWordInput = forwardRef<HTMLInputElement, SingleWordInputProps>(({
   isDisabled,
   onSubmitWord,
-}: SingleWordInputProps) => {
+}, ref) => {
   const [englishInput, setEnglishInput] = useState(``);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,6 +37,7 @@ const SingleWordInput = ({
 
   return (
     <input
+      ref={ref}
       value={englishInput}
       type="text"
       onChange={handleChange}
@@ -49,6 +50,8 @@ const SingleWordInput = ({
       className="bg-white/10 backdrop-blur-sm text-white placeholder-white/60 w-full rounded-xl p-5 text-center text-2xl border border-white/20 shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
     />
   );
-};
+});
+
+SingleWordInput.displayName = 'SingleWordInput';
 
 export { SingleWordInput };

@@ -11,11 +11,16 @@ const SpinningPig = ({ pigSpinSpeed }: SpinningPigProps) => {
   });
   return (
     <motion.img
-      className="max-w-80 h-80 p-[5%]"
+      className="w-80 h-80 p-[5%] object-contain"
       src="/LargePig.png"
       alt="This piggy went to market"
       style={{ rotate }}
-      whileHover={{ scale: 1.2, transition: { duration: 0.5 } }}
+      whileHover={{ 
+        scale: 1.2, 
+        transition: { duration: 0.5 } 
+      }}
+      initial={{ scale: 1 }}
+      animate={{ scale: 1 }}
     />
   );
 };

@@ -10,7 +10,6 @@ import { GameMode } from "@/tabs/GameMode";
 import "react-tabs/style/react-tabs.css";
 import { SpinningPig } from "@/components/SpinningPig";
 import { HowTo } from "@/tabs/HowTo";
-import { StepThroughWord } from "@/components/StepThroughWord";
 
 export default function Page() {
   const [pigSpinSpeed, setPigSpinSpeed] = useState(20000);
@@ -19,33 +18,40 @@ export default function Page() {
     setPigSpinSpeed(pigSpinSpeed * 0.8);
   };
 
-  const selectedTabClassName = "bg-[pink] text-black rounded-t-lg";
+  const selectedTabClassName = "bg-pink-500 text-white rounded-t-xl shadow-lg !bg-pink-500";
 
   return (
-    <div className="w-full flex flex-col justify-center items-center text-center">
-      <header className="text-4xl text-bold">Translate English to Pig Latin</header>
+    <div className="w-full flex flex-col justify-center items-center text-center px-4 py-8">
+      <header className="text-5xl font-bold mb-8 text-white drop-shadow-lg">
+        Translate English to Pig Latin
+      </header>
       <SpinningPig pigSpinSpeed={pigSpinSpeed} />
-      <div className="min-w-[60%]">
-        <Tabs className="text-md" selectedTabClassName={selectedTabClassName}>
-          <TabList>
-            <Tab>Translate</Tab>
-            <Tab>Game</Tab>
-            <Tab>Teach me!</Tab>
+      <div className="w-full max-w-6xl">
+        <Tabs className="text-lg" selectedTabClassName={selectedTabClassName}>
+          <TabList className="flex space-x-2 mb-6 bg-white/10 backdrop-blur-sm p-2 rounded-xl border border-white/20 shadow-lg justify-center">
+            <Tab className="px-6 py-3 rounded-lg font-semibold transition-all duration-200 bg-white/5 hover:bg-white/15 cursor-pointer outline-none">
+              Translate
+            </Tab>
+            <Tab className="px-6 py-3 rounded-lg font-semibold transition-all duration-200 bg-white/5 hover:bg-white/15 cursor-pointer outline-none">
+              Game
+            </Tab>
+            <Tab className="px-6 py-3 rounded-lg font-semibold transition-all duration-200 bg-white/5 hover:bg-white/15 cursor-pointer outline-none">
+              Teach me!
+            </Tab>
           </TabList>
-          <TabPanel>
-            <NormalTranslator />
-          </TabPanel>
-          <TabPanel>
-            <GameMode increasePigSpinSpeed={increasePigSpinSpeed} />
-          </TabPanel>
-          <TabPanel>
-            <HowTo />
-          </TabPanel>
+          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 shadow-xl">
+            <TabPanel>
+              <NormalTranslator />
+            </TabPanel>
+            <TabPanel>
+              <GameMode increasePigSpinSpeed={increasePigSpinSpeed} />
+            </TabPanel>
+            <TabPanel>
+              <HowTo />
+            </TabPanel>
+          </div>
         </Tabs>
       </div>
-      <StepThroughWord leadingConsonants={"h"} trailingEnd={"ello"} suffix={"ay"} originalWord={"hello"} translatedWord={"ellohay"} />
-      <StepThroughWord leadingConsonants={"xxxx"} trailingEnd={"uuuu"} suffix={"ay"} originalWord={""} translatedWord={""} />
-      <StepThroughWord leadingConsonants={""} trailingEnd={"uuuu"} suffix={"yay"} originalWord={""} translatedWord={""} />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useState, useRef } from "react";
 
 import translator from "@/lib/translator";
 import type { TranslationResult } from "@/lib/translator";
@@ -10,6 +10,7 @@ import { AnimatedWord } from "@/components/AnimatedWord";
 const NormalTranslator = () => {
   const [pigLatinOutput, setPigLatinOutput] = useState(``);
   const [animatingWord, setAnimatingWord] = useState<TranslationResult[]>([]);
+  const animationKeyRef = useRef(0);
 
   const handleSubmitWord = useCallback((inputWord: string) => {
     console.log(`handleSubmitWord: inputWord=[${inputWord}]`);
@@ -29,6 +30,7 @@ const NormalTranslator = () => {
 
     // Start animating the word
     setAnimatingWord((prev) => [...prev, translationResult]);
+    animationKeyRef.current += 1;
 
     console.log(
       `handleSubmitWord: inputWord=[${inputWord}] translatedWord=[${translatedWord}]`,
@@ -74,7 +76,7 @@ const NormalTranslator = () => {
       
       {animatingWord.length > 0 && (
         <AnimatedWord
-          key={`${animatingWord[0].originalWord}-${pigLatinOutput.length}`}
+          key={`${animatingWord[0].originalWord}-${animationKeyRef.current}`}
           {...animatingWord[0]}
           onAnimationComplete={handleAnimationComplete}
         />

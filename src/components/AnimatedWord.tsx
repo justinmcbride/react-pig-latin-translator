@@ -35,6 +35,24 @@ const AnimatedWord = ({
 
   const [scope, animate] = useAnimate();
 
+  // Helper function to safely animate elements
+  const safeAnimate = useCallback(
+    (selector: string, values: any, options?: any) => {
+      // Check if the component is still mounted and elements exist
+      if (!scope.current) {
+        return Promise.resolve();
+      }
+      
+      const element = scope.current.querySelector(selector);
+      if (!element) {
+        return Promise.resolve();
+      }
+      
+      return animate(selector, values, options);
+    },
+    [animate, scope]
+  );
+
   const doAnimations = useCallback(async () => {
     if (
       leadingBounds.width === 0 &&
@@ -45,17 +63,22 @@ const AnimatedWord = ({
     }
     setHasRunAnimation(true);
 
+    // Check if scope is still mounted before proceeding
+    if (!scope.current) {
+      return;
+    }
+
     // instantly shift the leadingConsonants and trailingEnd to their starting positions,
     // which is offset to the right by the suffix's width
     await Promise.all([
-      animate(
+      safeAnimate(
         "#leading",
         {
           x: suffixBounds.width,
         },
         { duration: 0 }
       ),
-      animate(
+      safeAnimate(
         "#trailing",
         {
           x: suffixBounds.width,
@@ -69,14 +92,14 @@ const AnimatedWord = ({
     // in parallel: make both leadingConsonants and trailingEnd visible
     const visibilityDuration = 0.2;
     await Promise.all([
-      animate(
+      safeAnimate(
         "#leading",
         {
           opacity: 1,
         },
         { duration: visibilityDuration }
       ),
-      animate(
+      safeAnimate(
         "#trailing",
         {
           opacity: 1,
@@ -88,7 +111,7 @@ const AnimatedWord = ({
     // in parallel: move leadingConsonants and trailingEnd to their new word positions
 
     await Promise.all([
-      animate(
+      safeAnimate(
         "#leading",
         {
           x: trailingBounds.width + suffixBounds.width,
@@ -96,7 +119,7 @@ const AnimatedWord = ({
         },
         { duration: 1 }
       ),
-      animate(
+      safeAnimate(
         "#trailing",
         {
           x: -leadingBounds.width + suffixBounds.width,
@@ -108,14 +131,14 @@ const AnimatedWord = ({
 
     // shift both leadingConsonants and trailingEnd to their final positions
     await Promise.all([
-      animate(
+      safeAnimate(
         "#leading",
         {
           x: trailingBounds.width,
         },
         { duration: 0.2 }
       ),
-      animate(
+      safeAnimate(
         "#trailing",
         {
           x: -leadingBounds.width,
@@ -125,7 +148,7 @@ const AnimatedWord = ({
     ]);
 
     await Promise.all([
-      animate(
+      safeAnimate(
         "#suffix",
         {
           opacity: 1,
@@ -136,7 +159,7 @@ const AnimatedWord = ({
     ]);
 
     onAnimationComplete?.(originalWord);
-  }, [leadingBounds, trailingBounds, animate, suffixBounds, onAnimationComplete]);
+  }, [leadingBounds, trailingBounds, suffixBounds, onAnimationComplete, originalWord, scope, safeAnimate]);
 
   useEffect(() => {
     if (!hasRunAnimation) doAnimations();
